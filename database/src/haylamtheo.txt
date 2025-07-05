@@ -1,0 +1,52 @@
+Phân tích & Thiết kế Trang Báo cáo và Thống kê
+Trước tiên tôi cần bạn đọc file database. database\src\datn.sql
+Sau đó sẻ thiết kế trang Báo cáo và Thống kê
+Tôi cần bạn viết các hàm trong \app\Http\Controllers\admin\ReportController.php và hoàn thành giao diện trang \resources\views\admin\pages\reports\index.blade.php
+Tôi muốn bạn lên kế hoạch cho từng tab và thực hiện từng tab chức năng.
+
+Triết lý thiết kế: Trang này không phải là một Dashboard thứ hai. Mục tiêu của nó là cung cấp khả năng phân tích sâu dữ liệu lịch sử để trả lời các câu hỏi kinh doanh quan trọng, thay vì chỉ theo dõi hoạt động trong ngày.
+I. Cấu trúc tổng thể của Trang
+Để tránh gây quá tải thông tin, trang sẽ được thiết kế theo cấu trúc Tab (Thẻ). Mỗi tab sẽ tập trung vào một khía cạnh kinh doanh cụ thể.
+Thành phần chung quan trọng nhất:
+•	Bộ lọc theo khoảng thời gian (Date Range Picker): Một bộ lọc nằm ở đầu trang, cho phép người dùng chọn một khoảng thời gian bất kỳ (ví dụ: Tháng trước, Quý này, hoặc từ ngày A đến ngày B). Tất cả các biểu đồ và số liệu trên trang sẽ tự động cập nhật theo khoảng thời gian này.
+•	Nút "Xuất báo cáo" (Export): Mỗi khu vực báo cáo nên có nút để xuất dữ liệu ra file Excel hoặc PDF.
+Cấu trúc các Tab:
+1.	Tab 1: Báo cáo Doanh thu (Tập trung vào tài chính)
+2.	Tab 2: Báo cáo Hội viên (Tập trung vào khách hàng)
+3.	Tab 3: Báo cáo Hoạt động (Tập trung vào vận hành)
+II. Chi tiết nội dung từng Tab
+Tab 1: Báo cáo Doanh thu
+•	Mục tiêu: Giúp chủ phòng gym hiểu rõ tình hình tài chính, xác định các nguồn thu chính và theo dõi sự tăng trưởng.
+•	Các câu hỏi cần trả lời:
+o	"Doanh thu tháng này so với tháng trước như thế nào?"
+o	"Gói tập nào đang là 'ngôi sao' mang lại nhiều doanh thu nhất?"
+o	"Tổng doanh thu trong Quý 3 là bao nhiêu?"
+Thành phần	Mô tả chi tiết	Dữ liệu cần từ DB
+Thẻ KPI	- Tổng Doanh thu: Tổng số tiền trong khoảng thời gian đã chọn.<br>- Tổng số Giao dịch: Tổng số lần thanh toán.<br>- Giá trị Giao dịch Trung bình: (Tổng Doanh thu / Tổng số Giao dịch).	payments (amount, payment_date)
+Biểu đồ 1	Xu hướng Doanh thu (Biểu đồ Đường - Line Chart):<br>Trục X là thời gian (ngày/tuần/tháng), Trục Y là tổng doanh thu. Giúp nhìn thấy sự tăng trưởng, sụt giảm theo mùa vụ.	payments (amount, payment_date)
+Biểu đồ 2	Cơ cấu Doanh thu (Biểu đồ Cột - Bar Chart):<br>Mỗi cột là một gói tập, chiều cao cột thể hiện tổng doanh thu mà gói đó mang lại. Giúp xác định sản phẩm chủ lực.	payments, membersubscriptions, membership_plans
+Bảng dữ liệu	Chi tiết Giao dịch:<br>Một bảng DataTables hiển thị tất cả các thanh toán trong khoảng thời gian đã chọn, bao gồm: Mã thanh toán, Tên hội viên, Tên gói tập, Số tiền, Ngày thanh toán. Có thể tìm kiếm và sắp xếp.	payments, membersubscriptions, members, membership_plans
+Tab 2: Báo cáo Hội viên
+•	Mục tiêu: Theo dõi sự phát triển của cộng đồng, hiểu rõ hành vi và đặc điểm của hội viên để có chiến lược giữ chân và thu hút khách hàng mới.
+•	Các câu hỏi cần trả lời:
+o	"Tốc độ tăng trưởng hội viên mới của chúng ta có tốt không?"
+o	"Hội viên có xu hướng gia hạn hay rời đi sau khi hết gói?"
+o	"Đa số hội viên đang sử dụng loại gói tập nào?"
+Thành phần	Mô tả chi tiết	Dữ liệu cần từ DB
+Thẻ KPI	- Hội viên mới: Số lượng hội viên đăng ký trong khoảng thời gian.<br>- Hội viên rời đi (Churn): Số lượng hội viên hết hạn nhưng không gia hạn.<br>- Tỷ lệ Gia hạn (Retention Rate): % hội viên tiếp tục gia hạn.	members (join_date), membersubscriptions (start_date, end_date)
+Biểu đồ 1	Tăng trưởng Hội viên mới (Biểu đồ Đường):<br>Trục X là thời gian, Trục Y là số lượng hội viên mới đăng ký.	members (join_date)
+Biểu đồ 2	Phân bổ Gói tập (Biểu đồ Tròn - Pie Chart):<br>Hiển thị tỷ lệ % các gói tập đang được hội viên sử dụng. Giúp biết gói nào đang phổ biến nhất.	membersubscriptions (plan_id), membership_plans
+Bảng dữ liệu	Danh sách Hội viên mới:<br>Bảng DataTables liệt kê các hội viên đã đăng ký trong khoảng thời gian, bao gồm: Tên, Ngày tham gia, Gói tập đầu tiên.	members, membersubscriptions
+Tab 3: Báo cáo Hoạt động
+•	Mục tiêu: Phân tích tần suất và thời gian sử dụng phòng gym của hội viên để tối ưu hóa việc sắp xếp nhân sự, lịch các lớp học và bố trí thiết bị.
+•	Các câu hỏi cần trả lời:
+o	"Khung giờ nào trong ngày là cao điểm nhất?"
+o	"Thứ mấy trong tuần thường đông khách nhất?"
+o	"Hội viên nào là người tích cực nhất?"
+Thành phần	Mô tả chi tiết	Dữ liệu cần từ DB
+Thẻ KPI	- Tổng lượt Check-in: Tổng số lượt ra vào trong khoảng thời gian.<br>- Thời gian Tập Trung bình: Thời gian trung bình từ lúc check-in đến lúc check-out.<br>- Giờ Vàng (Peak Hour): Khung giờ có nhiều lượt check-in nhất.	checkins (checkin_time, checkout_time)
+Biểu đồ 1	Phân bổ Check-in theo Giờ trong Ngày (Biểu đồ Cột):<br>Trục X là các khung giờ (6h, 7h, ... 21h), Trục Y là tổng số lượt check-in. Giúp xác định giờ cao điểm.	checkins (checkin_time)
+Biểu đồ 2	Phân bổ Check-in theo Ngày trong Tuần (Biểu đồ Cột):<br>Trục X là Thứ 2, Thứ 3,..., Chủ Nhật. Trục Y là tổng số lượt check-in. Giúp biết ngày nào đông khách nhất.	checkins (checkin_time)
+Bảng dữ liệu	Top Hội viên Tích cực:<br>Bảng xếp hạng các hội viên có số lượt check-in nhiều nhất trong khoảng thời gian đã chọn.	checkins, members
+Bằng cách xây dựng trang Báo cáo theo cấu trúc này, bạn sẽ có một công cụ phân tích cực kỳ mạnh mẽ, cung cấp những thông tin chi tiết và giá trị để định hướng sự phát triển của phòng gym.
+
