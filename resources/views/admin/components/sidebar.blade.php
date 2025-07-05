@@ -175,7 +175,7 @@
             <li><a href="{{ route('admin.rfid.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/rfid*') }}"><i
                         class="ri-rfid-line"></i>Quản Lý Thẻ RFID</a></li>
-            <li><a href="#"
+            <li><a href="{{ route('admin.reports.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/reports*') }}"><i
                         class="ri-bar-chart-line"></i>Báo Cáo & Thống Kê</a></li>
         </ul>
