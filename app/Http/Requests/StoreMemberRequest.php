@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +23,7 @@ class StoreMemberRequest extends FormRequest
         return [
             'full_name'    => 'required|string|max:100',
             'phone'        => 'required|string|max:15|unique:members,phone',
-            'email'        => 'nullable|email|max:100|unique:members,email',
+            'email'        => 'required|email|max:100|unique:members,email',
             'notes'        => 'nullable|string',
             'rfid_card_id' => 'nullable|string|max:50|unique:members,rfid_card_id',
             'img'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
