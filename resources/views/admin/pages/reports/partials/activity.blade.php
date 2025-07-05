@@ -23,7 +23,8 @@
                 <i class="ri-fire-line text-4xl"></i>
             </div>
             <div class="stat-title">Giờ vàng</div>
-            <div class="stat-value text-error">{{ $activityReport['peakHour'] ? $activityReport['peakHour']->hour . ':00' : 'N/A' }}</div>
+            <div class="stat-value text-error">
+                {{ $activityReport['peakHour'] ? $activityReport['peakHour']->hour . ':00' : 'N/A' }}</div>
         </div>
     </div>
 </div>
@@ -47,7 +48,7 @@
     <div class="card-body">
         <h2 class="card-title mb-4">Top hội viên tích cực</h2>
         <div class="overflow-x-auto">
-            <table class="table table-zebra w-full">
+            <table class="table table-zebra w-full datatable">
                 <thead>
                     <tr>
                         <th>Tên hội viên</th>
@@ -57,7 +58,7 @@
                 <tbody>
                     @forelse ($activityReport['topActiveMembers'] as $member)
                         <tr>
-                            <td>{{ $member->full_name }}</td>
+                            <td>{{ $member->member->full_name }}</td>
                             <td>{{ $member->total_checkins }}</td>
                         </tr>
                     @empty

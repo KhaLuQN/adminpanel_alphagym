@@ -62,7 +62,7 @@
                     @forelse ($revenueReport['detailedTransactions'] as $transaction)
                         <tr>
                             <td>{{ $transaction->payment_id }}</td>
-                            <td>{{ $transaction->full_name }}</td>
+                            <td>{{ $transaction->subscription->member->full_name }}</td>
                             <td>{{ $transaction->plan_name }}</td>
                             <td>{{ number_format($transaction->amount, 0, ',', '.') }} đ</td>
                             <td>{{ $transaction->payment_date }}</td>

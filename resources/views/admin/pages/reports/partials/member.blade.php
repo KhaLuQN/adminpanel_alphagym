@@ -47,7 +47,7 @@
     <div class="card-body">
         <h2 class="card-title mb-4">Danh sách hội viên mới</h2>
         <div class="overflow-x-auto">
-            <table class="table table-zebra w-full">
+            <table class="table table-zebra w-full datatable">
                 <thead>
                     <tr>
                         <th>Tên hội viên</th>
