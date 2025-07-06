@@ -37,12 +37,15 @@ $(".datatable").each(function () {
         buttons: [
             {
                 extend: "excelHtml5",
-                text: '<i class="ri-file-excel-fill mr-1 text-green-600 text-lg"></i> Xuất Excel',
-                className: "  bg-white text-white",
-                title: "Danh sách hội viên",
-                exportOptions: {
-                    columns: [0, 2, 3, 4, 5],
-                },
+                text: '<i class="ri-file-excel-2-line "></i> Excel',
+                className: "bg-green-700 btn   ",
+                titleAttr: "Xuất ra file Excel",
+            },
+            {
+                extend: "pdfHtml5",
+                text: '<i class="ri-file-pdf-2-line mr-1"></i> PDF',
+                className: "btn btn-sm",
+                titleAttr: "Xuất ra file PDF",
             },
         ],
     });

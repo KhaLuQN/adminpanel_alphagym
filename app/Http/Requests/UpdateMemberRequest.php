@@ -34,4 +34,27 @@ class UpdateMemberRequest extends FormRequest
             'status'       => ['required', 'string', Rule::in(['active', 'expired', 'banned'])],
         ];
     }
+    /**
+     * Get the custom validation messages for the defined rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'full_name.required' => 'Vui lòng nhập họ và tên của hội viên.',
+            'full_name.max'      => 'Họ và tên không được vượt quá 100 ký tự.',
+
+            'phone.required'     => 'Số điện thoại là bắt buộc.',
+            'phone.unique'       => 'Số điện thoại này đã được sử dụng.',
+
+            'email.required'     => 'Địa chỉ email là bắt buộc.',
+            'email.email'        => 'Địa chỉ email không hợp lệ.',
+            'email.unique'       => 'Email này đã được đăng ký cho một tài khoản khác.',
+
+            'img.image'          => 'File tải lên phải là một hình ảnh.',
+            'img.mimes'          => 'Chỉ chấp nhận các định dạng ảnh: jpg, jpeg, png.',
+            'img.max'            => 'Kích thước ảnh không được vượt quá 2MB.',
+        ];
+    }
 }

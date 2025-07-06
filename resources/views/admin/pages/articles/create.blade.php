@@ -51,7 +51,7 @@
                                 </label>
                                 <input type="text" name="title" id="title"
                                     class="input input-bordered w-full @error('title') input-error @enderror"
-                                    value="{{ old('title') }}" required placeholder="Nhập tiêu đề bài viết...">
+                                    value="{{ old('title') }}" placeholder="Nhập tiêu đề bài viết...">
                                 @error('title')
                                     <label class="label">
                                         <span class="label-text-alt text-error">{{ $message }}</span>
@@ -70,7 +70,7 @@
                                 <div class="input-group">
                                     <input type="text" name="slug" id="slug"
                                         class="input input-bordered w-full @error('slug') input-error @enderror"
-                                        value="{{ old('slug') }}" required placeholder="duong-dan-url-bai-viet">
+                                        value="{{ old('slug') }}" placeholder="duong-dan-url-bai-viet">
                                     <button type="button" id="generate-slug" class="btn btn-square btn-outline">
                                         <i class="ri-refresh-line"></i>
                                     </button>
@@ -111,7 +111,7 @@
                             </h2>
 
                             <div class="form-control">
-                                <textarea name="content" id="content" class="@error('content') textarea-error @enderror" required>{{ old('content') }}</textarea>
+                                <textarea name="content" id="content" class="@error('content') textarea-error @enderror">{{ old('content') }}</textarea>
                                 @error('content')
                                     <label class="label">
                                         <span class="label-text-alt text-error">{{ $message }}</span>
@@ -261,9 +261,7 @@
                                         <option value="published" {{ old('status') == 'published' ? 'selected' : '' }}>
                                             <i class="ri-checkbox-circle-line"></i> Đã Xuất Bản
                                         </option>
-                                        <option value="archived" {{ old('status') == 'archived' ? 'selected' : '' }}>
-                                            <i class="ri-archive-line"></i> Lưu Trữ
-                                        </option>
+
                                     </select>
                                     @error('status')
                                         <label class="label">
