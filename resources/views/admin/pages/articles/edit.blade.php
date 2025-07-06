@@ -473,22 +473,8 @@
                             'mediaEmbed',
                             'undo',
                             'redo',
-                            'alignment',
-                            'codeBlock',
-                            'findAndReplace',
-                            'fontSize',
-                            'fontFamily',
-                            'fontColor',
-                            'fontBackgroundColor',
-                            'highlight',
-                            'horizontalLine',
-                            'htmlEmbed',
-                            'pageBreak',
-                            'removeFormat',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'underline'
+
+
                         ]
                     },
                     language: 'vi',

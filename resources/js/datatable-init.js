@@ -7,7 +7,6 @@ $(".datatable").each(function () {
     if ($.fn.DataTable.isDataTable(this)) {
         $(this).DataTable().destroy();
     }
-
     $(this).DataTable({
         responsive: true,
         autoWidth: false,
