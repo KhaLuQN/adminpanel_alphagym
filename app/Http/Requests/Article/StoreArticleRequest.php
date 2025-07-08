@@ -1,21 +1,18 @@
 <?php
-namespace App\Http\Requests;
+namespace App\Http\Requests\Article;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateArticleRequest extends FormRequest
+class StoreArticleRequest extends FormRequest
 {
     public function authorize()
     {return true;}
 
     public function rules()
     {
-        $article   = $this->route('article');
-        $articleId = $article?->article_id;
-
         return [
             'title'               => 'required|string|max:255',
-            'slug'                => 'required|string|unique:articles,slug,' . $articleId . ',article_id|max:255',
+            'slug'                => 'required|string|unique:articles|max:255',
             'content'             => 'required|string',
             'excerpt'             => 'nullable|string|max:255',
             'featured_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
