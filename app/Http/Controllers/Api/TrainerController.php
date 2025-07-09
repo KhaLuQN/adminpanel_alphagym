@@ -10,8 +10,12 @@ class TrainerController extends Controller
 
     public function index()
     {
-        $trainers = TrainerProfile::with('member')->latest()->get();
+        $trainers = TrainerProfile::with('member')
+            ->where('is_active', true)
+            ->latest()
+            ->get();
 
         return TrainerResource::collection($trainers);
     }
+
 }
