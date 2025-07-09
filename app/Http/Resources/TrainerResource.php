@@ -3,9 +3,15 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class TrainerResource extends JsonResource
 {
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(Request $request): array
     {
         return [
@@ -14,7 +20,7 @@ class TrainerResource extends JsonResource
             'full_name'        => $this->member->full_name,
 
             'photo_url'        => $this->photo_url
-            ? asset($this->photo_url)
+            ? asset(Storage::url($this->photo_url))
             : null,
             'specialty'        => $this->specialty,
             'bio'              => $this->bio,

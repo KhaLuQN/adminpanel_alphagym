@@ -136,11 +136,12 @@
                                             <form
                                                 action="{{ route('admin.article-categories.destroy', $category->category_id) }}"
                                                 method="POST" class="inline-block"
-                                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa danh mục này? Hành động này không thể hoàn tác.');">
+                                                id="delete-article-categories-form-{{ $category->category_id }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit"
-                                                    class="btn btn-sm btn-error gap-1 hover:btn-error-focus">
+                                                <button type="button"
+                                                    data-form-id="delete-article-categories-form-{{ $category->category_id }}"
+                                                    class="btn btn-sm btn-error gap-1 hover:btn-error-focus delete-btn">
                                                     <i class="ri-delete-bin-line"></i>
                                                     Xóa
                                                 </button>
@@ -171,3 +172,6 @@
         </div>
     </div>
 @endsection
+@push('customjs')
+    @vite('resources/js/delete-confirmation.js')
+@endpush

@@ -15,8 +15,12 @@
         "tailwindcss": "^4.0.0-alpha.11"
     },
     "dependencies": {
+        "datatables.net-buttons": "^3.2.4",
+        "datatables.net-buttons-dt": "^3.2.4",
         "datatables.net-dt": "^2.3.2",
         "jquery": "^3.7.1",
+        "jszip": "^3.10.1",
+        "remixicon": "^4.6.0",
         "sweetalert2": "^11.22.2"
     }
 }

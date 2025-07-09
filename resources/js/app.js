@@ -6,8 +6,11 @@ import $ from "jquery";
 window.$ = $;
 window.jQuery = $;
 
-import DataTable from "datatables.net-dt";
-import "./datatable-init.js";
-
 import Swal from "sweetalert2";
 window.Swal = Swal;
+if (document.querySelector(".datatable")) {
+    import("./datatable-init.js").then((module) => {
+        console.log("DataTable loaded");
+    });
+}
+import "remixicon/fonts/remixicon.css";

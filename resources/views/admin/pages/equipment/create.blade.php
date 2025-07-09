@@ -17,7 +17,7 @@
                                 <label for="name" class="label">
                                     <span class="label-text">Tên thiết bị <span class="text-error">*</span></span>
                                 </label>
-                                <input type="text" id="name" name="name" value="{{ old('name') }}" required
+                                <input type="text" id="name" name="name" value="{{ old('name') }}"
                                     class="input input-bordered w-full @error('name') input-error @enderror">
                                 @error('name')
                                     <p class="text-error text-sm mt-1">{{ $message }}</p>
@@ -28,7 +28,7 @@
                                     <span class="label-text">Ngày mua <span class="text-error">*</span></span>
                                 </label>
                                 <input type="date" id="purchase_date" name="purchase_date"
-                                    value="{{ old('purchase_date') }}" required
+                                    value="{{ old('purchase_date') }}"
                                     class="input input-bordered w-full @error('purchase_date') input-error @enderror">
                                 @error('purchase_date')
                                     <p class="text-error text-sm mt-1">{{ $message }}</p>
@@ -38,7 +38,7 @@
                                 <label for="status" class="label">
                                     <span class="label-text">Trạng thái <span class="text-error">*</span></span>
                                 </label>
-                                <select id="status" name="status" required
+                                <select id="status" name="status"
                                     class="select select-bordered w-full @error('status') select-error @enderror">
                                     <option value="working" {{ old('status') == 'working' ? 'selected' : '' }}>Đang hoạt
                                         động</option>

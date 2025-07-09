@@ -12,6 +12,7 @@ use App\Http\Controllers\admin\MemberEngagementController;
 use App\Http\Controllers\admin\MembershipplanController;
 use App\Http\Controllers\admin\MemberSubscriptionController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
 use App\Http\Controllers\auth\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -101,4 +102,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('article-categories', ArticleCategoryController::class);
     Route::resource('articles', ArticleController::class);
+});
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });

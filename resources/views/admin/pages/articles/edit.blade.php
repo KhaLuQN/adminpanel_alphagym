@@ -189,10 +189,7 @@
                                                 {{ old('status', $article->status) == 'published' ? 'selected' : '' }}>
                                                 ✅ Đã Xuất Bản
                                             </option>
-                                            <option value="archived"
-                                                {{ old('status', $article->status) == 'archived' ? 'selected' : '' }}>
-                                                📦 Lưu Trữ
-                                            </option>
+
                                         </select>
                                         @error('status')
                                             <label class="label">
@@ -476,22 +473,8 @@
                             'mediaEmbed',
                             'undo',
                             'redo',
-                            'alignment',
-                            'codeBlock',
-                            'findAndReplace',
-                            'fontSize',
-                            'fontFamily',
-                            'fontColor',
-                            'fontBackgroundColor',
-                            'highlight',
-                            'horizontalLine',
-                            'htmlEmbed',
-                            'pageBreak',
-                            'removeFormat',
-                            'strikethrough',
-                            'subscript',
-                            'superscript',
-                            'underline'
+
+
                         ]
                     },
                     language: 'vi',

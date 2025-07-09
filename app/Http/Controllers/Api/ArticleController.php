@@ -13,10 +13,11 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = Article::where('status', 'published')
+        $articles = Article::with('category')
+            ->where('status', 'published')
             ->where('published_at', '<', now())
             ->latest('published_at')
-            ->paginate(10);
+            ->get();
 
         return ArticleResource::collection($articles);
     }
