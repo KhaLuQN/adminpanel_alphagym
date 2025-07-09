@@ -24,6 +24,7 @@ class ArticleResource extends JsonResource
             ? asset(Storage::url($this->featured_image_url))
             : null,
             'publishedDate' => $this->published_at ? $this->published_at->toIso8601String() : null,
+            'category_name' => $this->category->name ?? null,
         ];
     }
 }
