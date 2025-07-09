@@ -13,3 +13,4 @@ if (document.querySelector(".datatable")) {
         console.log("DataTable loaded");
     });
 }
+import "remixicon/fonts/remixicon.css";

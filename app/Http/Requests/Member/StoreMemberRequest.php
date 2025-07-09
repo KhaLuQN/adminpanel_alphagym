@@ -1,10 +1,9 @@
 <?php
-namespace App\Http\Requests;
+namespace App\Http\Requests\Member;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateMemberRequest extends FormRequest
+class StoreMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,17 +20,13 @@ class UpdateMemberRequest extends FormRequest
      */
     public function rules(): array
     {
-        $memberId = $this->input('member_id');
-
         return [
-            'member_id'    => 'required|exists:members,member_id',
             'full_name'    => 'required|string|max:100',
-            'phone'        => ['required', 'string', 'max:15', Rule::unique('members')->ignore($memberId, 'member_id')],
-            'email'        => ['nullable', 'email', 'max:100', Rule::unique('members')->ignore($memberId, 'member_id')],
+            'phone'        => 'required|string|max:10|unique:members,phone',
+            'email'        => 'required|email|max:100|unique:members,email',
             'notes'        => 'nullable|string',
+            'rfid_card_id' => 'nullable|string|max:50|unique:members,rfid_card_id',
             'img'          => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'rfid_card_id' => ['nullable', 'string', 'max:50', Rule::unique('members')->ignore($memberId, 'member_id')],
-            'status'       => ['required', 'string', Rule::in(['active', 'expired', 'banned'])],
         ];
     }
     /**

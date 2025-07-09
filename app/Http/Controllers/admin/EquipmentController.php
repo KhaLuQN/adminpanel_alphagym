@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreEquipmentRequest;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,16 +21,9 @@ class EquipmentController extends Controller
         return view('admin.pages.equipment.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreEquipmentRequest $request)
     {
-        $validated = $request->validate([
-            'name'          => 'required|string|max:255',
-            'img'           => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'purchase_date' => 'required|date',
-            'status'        => 'required|in:working,maintenance,broken',
-            'location'      => 'nullable|string|max:255',
-            'notes'         => 'nullable|string',
-        ]);
+        $validated = $request->validate();
 
         if ($request->hasFile('img')) {
             $file     = $request->file('img');
