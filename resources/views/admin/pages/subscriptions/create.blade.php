@@ -366,7 +366,7 @@
                 }
             });
 
-            // Update expiry date when start date changes
+
             $('input[name="start_date"]').change(function() {
                 const duration = $('.package-radio:checked').data('duration');
                 const expiryDate = new Date($(this).val());
