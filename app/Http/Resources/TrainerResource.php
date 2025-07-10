@@ -28,6 +28,8 @@ class TrainerResource extends JsonResource
             'certifications'   => $this->certifications,
             'facebook_url'     => $this->facebook_url,
             'instagram_url'    => $this->instagram_url,
+            'slug'             => $this->slug,
+            'badge_class'      => $this->badge_class,
         ];
     }
 }
