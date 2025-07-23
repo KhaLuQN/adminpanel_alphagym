@@ -176,8 +176,10 @@
                                                 </td>
                                                 <td>
                                                     <div class="font-bold text-error">Hết hạn:
-                                                        {{ $sub->end_date->format('d/m/Y') }}</div>
-                                                    <div class="text-sm text-warning">{{ $sub->end_date->diffForHumans() }}
+                                                        {{ \Carbon\Carbon::parse($sub->end_date)->format('d/m/Y') }}</div>
+                                                    <div class="text-sm text-warning">
+                                                        {{ \Carbon\Carbon::parse($sub->end_date)->diffForHumans() }}
+
                                                     </div>
                                                 </td>
                                             </tr>

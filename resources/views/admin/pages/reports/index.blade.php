@@ -69,16 +69,16 @@
                         datasets: [{
                             label: 'Doanh thu',
                             data: {!! json_encode($revenueReport['revenueTrend']->pluck('total')) !!},
-                            borderColor: 'hsl(var(--p))',
-                            backgroundColor: 'hsla(var(--p), 0.2)',
-                            borderWidth: 2,
+
                             fill: true,
                         }]
                     }
                 });
             }
 
-            // Revenue By Plan Chart
+
+
+
             var ctxRevenueByPlan = document.getElementById('revenueByPlanChart')?.getContext('2d');
             if (ctxRevenueByPlan) {
                 new Chart(ctxRevenueByPlan, {
@@ -88,13 +88,13 @@
                         datasets: [{
                             label: 'Doanh thu',
                             data: {!! json_encode($revenueReport['revenueByPlan']->pluck('total')) !!},
-                            backgroundColor: 'hsla(var(--p), 0.5)',
-                            borderColor: 'hsl(var(--p))',
+
                             borderWidth: 1
                         }]
                     }
                 });
             }
+
 
 
             // Member Growth Chart
@@ -107,8 +107,7 @@
                         datasets: [{
                             label: 'Hội viên mới',
                             data: {!! json_encode($memberReport['memberGrowth']->pluck('total')) !!},
-                            borderColor: 'hsl(var(--su))',
-                            backgroundColor: 'hsla(var(--su), 0.2)',
+
                             borderWidth: 2,
                             fill: true,
                         }]
@@ -127,13 +126,7 @@
                         datasets: [{
                             label: 'Phân bố gói tập',
                             data: {!! json_encode($memberReport['planDistribution']->pluck('total')) !!},
-                            backgroundColor: [
-                                'hsla(var(--p), 0.5)',
-                                'hsla(var(--su), 0.5)',
-                                'hsla(var(--wa), 0.5)',
-                                'hsla(var(--er), 0.5)',
-                                'hsla(var(--in), 0.5)',
-                            ],
+
                             borderWidth: 1
                         }]
                     }
@@ -151,8 +144,7 @@
                         datasets: [{
                             label: 'Lượt check-in',
                             data: {!! json_encode($activityReport['checkinsByHour']->pluck('total')) !!},
-                            backgroundColor: 'hsla(var(--wa), 0.5)',
-                            borderColor: 'hsl(var(--wa))',
+
                             borderWidth: 1
                         }]
                     }
@@ -170,8 +162,7 @@
                         datasets: [{
                             label: 'Lượt check-in',
                             data: {!! json_encode($activityReport['checkinsByDay']->pluck('total')) !!},
-                            backgroundColor: 'hsla(var(--in), 0.5)',
-                            borderColor: 'hsl(var(--in))',
+
                             borderWidth: 1
                         }]
                     }
