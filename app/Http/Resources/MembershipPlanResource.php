@@ -19,11 +19,20 @@ class MembershipPlanResource extends JsonResource
         return [
             'id'               => $this->plan_id,
             'name'             => $this->plan_name,
-            'durationDays'     => $this->duration_days,
             'price'            => $this->price,
-            'description'      => $this->description,
+            'duration_days'    => $this->duration_days,
             'discount_percent' => $this->discount_percent,
+            'description'      => $this->description,
 
+            'features'         => $this->whenLoaded('features', function () {
+                return $this->features->map(function ($feature) {
+                    return [
+                        'name'  => $feature->name,
+                        'icon'  => $feature->icon,
+                        'value' => $feature->pivot->feature_value,
+                    ];
+                });
+            }),
         ];
     }
 }

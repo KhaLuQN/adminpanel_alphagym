@@ -173,7 +173,7 @@
                                                 @if ($article->featured_image_url)
                                                     <div class="avatar">
                                                         <div class="w-12 h-12 rounded-lg">
-                                                            <img src="{{ asset('storage/' . $article->featured_image_url) }}"
+                                                            <img src="{{ asset($article->featured_image_url) }}"
                                                                 alt="{{ $article->title }}" class="object-cover">
                                                         </div>
                                                     </div>

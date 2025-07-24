@@ -4,8 +4,8 @@
         <div class="bg-gradient-to-r from-primary to-secondary p-6">
             <div class="flex items-center text-primary-content">
                 <div class="avatar placeholder mr-3">
-                    <div class="bg-base-100 text-primary rounded-xl w-12">
-                        <i class="ri-admin-line text-2xl"></i>
+                    <div class="bg-base-100 text-center text-primary rounded-xl w-12">
+                        <i class="ri-admin-line text-5xl"></i>
                     </div>
                 </div>
                 <div>
@@ -28,9 +28,9 @@
 
             {{-- Hội Viên --}}
             <li>
-                <details {{ is_active('admin/member*', 'open') }}>
+                <details {{ is_active('admin/members*', 'open') }}>
                     <summary
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/member*') }}">
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/members*') }}">
                         <i class="ri-user-3-line"></i> Hội Viên
                     </summary>
                     <ul>
@@ -47,18 +47,18 @@
 
             {{-- Gói Dịch Vụ --}}
             <li>
-                <details {{ is_active('admin/package*', 'open') }}>
+                <details {{ is_active('admin/membership-plans*', 'open') }}>
                     <summary
-                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/package*') }}">
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/membership-plans*') }}">
                         <i class="ri-vip-crown-2-line"></i> Gói Dịch Vụ
                     </summary>
                     <ul>
-                        <li><a href="{{ route('admin.package.index') }}"
-                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/package/index') }}">Danh
+                        <li><a href="{{ route('admin.membership-plans.index') }}"
+                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/membership-plans/index') }}">Danh
                                 sách
                                 Gói</a></li>
-                        <li><a href="{{ route('admin.package.create') }}"
-                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/package/create') }}">Thêm
+                        <li><a href="{{ route('admin.membership-plans.create') }}"
+                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/membership-plans/create') }}">Thêm
                                 Gói</a></li>
                     </ul>
                 </details>
@@ -128,6 +128,23 @@
                         <li><a href="{{ route('admin.article-categories.index') }}"
                                 class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/article-categories') }}">Danh
                                 Mục Bài Viết</a></li>
+                    </ul>
+                </details>
+            </li>
+
+            <li>
+                <details {{ is_active('admin/trainers*', 'open') }}>
+                    <summary
+                        class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/trainers*') }}">
+                        <i class="ri-tools-line"></i> Huấn Luyện viên
+                    </summary>
+                    <ul>
+                        <li><a href="{{ route('admin.trainers.index') }}"
+                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/trainers') }}">Danh
+                                sách Huấn luyện viên</a></li>
+                        <li><a href="{{ route('admin.trainers.create') }}"
+                                class="px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/trainers/create') }}">Thêm
+                                Huấn luyên viên</a></li>
                     </ul>
                 </details>
             </li>
