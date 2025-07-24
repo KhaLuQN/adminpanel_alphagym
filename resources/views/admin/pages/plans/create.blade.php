@@ -8,6 +8,19 @@
             <div class="card-body">
                 <h2 class="card-title text-2xl font-bold">Thêm Gói tập mới</h2>
                 <p class="text-base-content/70 mb-6">Điền thông tin chi tiết và chọn các quyền lợi cho gói tập.</p>
+                @if ($errors->any())
+                    <div class="alert alert-error shadow-lg mb-6">
+                        <div class="flex flex-col">
+                            <span class="font-bold">Có lỗi xảy ra:</span>
+                            <ul class="list-disc list-inside text-sm mt-2">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                @endif
+
 
                 <form action="{{ route('admin.membership-plans.store') }}" method="POST">
                     @csrf

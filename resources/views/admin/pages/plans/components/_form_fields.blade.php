@@ -21,6 +21,11 @@
                         <input type="text" name="plan_name" placeholder="Ví dụ: Gói Premium 3 tháng"
                             class="input input-bordered focus:input-primary"
                             value="{{ old('plan_name', $plan->plan_name ?? '') }}" required>
+
+                        @error('plan_name')
+                            <span class="text-error text-sm mt-1 block">{{ $message }}</span>
+                        @enderror
+
                         <label class="label">
                             <span class="label-text-alt text-base-content/60">Tên gói sẽ hiển thị cho khách hàng</span>
                         </label>
@@ -63,6 +68,9 @@
                             <input type="number" name="duration_days" placeholder="30"
                                 class="input input-bordered focus:input-primary pr-16"
                                 value="{{ old('duration_days', $plan->duration_days ?? '') }}" min="1" required>
+                            @error('duration_days')
+                                <span class="text-error text-sm mt-1 block">{{ $message }}</span>
+                            @enderror
                             <span
                                 class="absolute right-3 top-1/2 transform -translate-y-1/2 text-base-content/60 text-sm">ngày</span>
                         </div>
@@ -172,19 +180,27 @@
                         @endphp
                         <div class="p-3 border border-base-300 rounded-lg hover:bg-base-200/50 transition-colors">
                             <div class="form-control">
+
                                 <label class="label cursor-pointer justify-start gap-3 p-0">
                                     <input type="checkbox" name="features[{{ $feature->feature_id }}][id]"
                                         value="{{ $feature->feature_id }}"
                                         class="checkbox checkbox-primary checkbox-sm" {{ $isChecked }}>
+                                    @error("features.{$feature->feature_id}.id")
+                                        <span class="text-error text-sm mt-1 block">{{ $message }}</span>
+                                    @enderror
                                     <span class="label-text font-medium">{{ $feature->name }}</span>
                                 </label>
                                 <input type="text" name="features[{{ $feature->feature_id }}][value]"
                                     placeholder="Giá trị (ví dụ: 5 lần/tuần)"
                                     class="input input-bordered input-sm mt-2 focus:input-primary"
                                     value="{{ $currentValue }}">
+                                @error("features.{$feature->feature_id}.value")
+                                    <span class="text-error text-sm mt-1 block">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     @endforeach
+
                 </div>
 
                 <div class="mt-4 p-3 bg-info/10 rounded-lg border border-info/20">
