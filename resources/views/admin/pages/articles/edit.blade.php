@@ -328,7 +328,7 @@
                                 <div class="space-y-4">
                                     @if ($article->featured_image_url)
                                         <div class="relative">
-                                            <img src="{{ asset('storage/' . $article->featured_image_url) }}"
+                                            <img src="{{ asset($article->featured_image_url) }}"
                                                 alt="{{ $article->title }}"
                                                 class="w-full h-48 object-cover rounded-lg border-2 border-base-300">
                                             <div class="absolute top-2 right-2">

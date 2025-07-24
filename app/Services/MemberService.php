@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\Member;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class MemberService
 {
@@ -56,7 +57,9 @@ class MemberService
     private function storeMemberImage(UploadedFile $file): string
     {
         $filename = time() . '_' . $file->getClientOriginalName();
-        $file->move(public_path('admin/images/member'), $filename);
-        return 'admin/images/member/' . $filename;
+        $path     = $file->storeAs('member', $filename, 'public');
+
+        return Storage::url($path);
     }
+
 }

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MembershipPlanResource;
 use App\Models\MembershipPlan;
-use Illuminate\Http\Request;
 
 class MembershipPlanController extends Controller
 {
@@ -16,7 +15,8 @@ class MembershipPlanController extends Controller
      */
     public function index()
     {
-        $plans = MembershipPlan::paginate(10);
+        $plans = MembershipPlan::with('features')->where('is_active', true)->get();
+
         return MembershipPlanResource::collection($plans);
     }
 
@@ -25,6 +25,7 @@ class MembershipPlanController extends Controller
      */
     public function show(MembershipPlan $membershipPlan)
     {
-        return new MembershipPlanResource($membershipPlan);
+        return new MembershipPlanResource($membershipPlan->load('features'));
+
     }
 }

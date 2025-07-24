@@ -1,86 +1,58 @@
 <?php
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreMembershipPlanRequest;
+use App\Http\Requests\UpdateMembershipPlanRequest;
 use App\Models\MembershipPlan;
-use Illuminate\Http\Request;
+use App\Models\PlanFeature;
+use App\Services\MembershipPlanService;
 
-class MembershipplanController extends Controller
+class MembershipPlanController extends Controller
 {
-    public function index()
-    {
-        $packages = MembershipPlan::orderBy('price', 'asc')->paginate(10);
+    protected $planService;
 
-        return view(
-            'admin.pages.package.index', compact('packages'));
+    public function __construct(MembershipPlanService $planService)
+    {
+        $this->planService = $planService;
     }
 
-    public function update(Request $request)
+    public function index()
     {
-
-        $request->validate([
-            'plan_id'          => 'required|integer|exists:membership_plans,plan_id',
-
-            'plan_name'        => 'required|string|max:255',
-            'duration_days'    => 'required|integer|min:1',
-            'price'            => 'required|numeric|min:0',
-            'discount_percent' => 'required|numeric|min:0|max:100',
-        ]);
-
-        try {
-            $package = MembershipPlan::findOrFail($request->plan_id);
-
-            $package->update([
-                'plan_name'        => $request->plan_name,
-                'duration_days'    => $request->duration_days,
-                'price'            => $request->price,
-                'discount_percent' => $request->discount_percent,
-            ]);
-
-            return redirect()->back()->with('success', 'Cập nhật gói tập thành công!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
-        }
+        $plans = MembershipPlan::withCount('features')->latest()->paginate(10);
+        return view('admin.pages.plans.index', compact('plans'));
     }
 
     public function create()
     {
-        return view('admin.pages.package.create');
-
+        $features = PlanFeature::all();
+        return view('admin.pages.plans.create', compact('features'));
     }
 
-    public function store(Request $request)
+    public function store(StoreMembershipPlanRequest $request)
     {
-        $request->validate([
-            'plan_name'        => 'required|string|max:255',
-            'duration_days'    => 'required|integer|min:1',
-            'price'            => 'required|numeric|min:0',
-            'discount_percent' => 'nullable|numeric|min:0|max:100',
-        ]);
 
-        try {
-            MembershipPlan::create([
-                'plan_name'        => $request->plan_name,
-                'duration_days'    => $request->duration_days,
-                'price'            => $request->price,
-                'discount_percent' => $request->discount_percent ?? 0,
-            ]);
-
-            return redirect()->route('admin.package.index')->with('success', 'Thêm gói tập thành công!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
-        }
+        $this->planService->createPlan($request->validated());
+        return redirect()->route('admin.membership-plans.index')->with('success', 'Tạo gói tập thành công!');
     }
-    public function destroy($id)
+
+    public function edit(MembershipPlan $membershipPlan)
     {
-        try {
-            $plan = MembershipPlan::findOrFail($id);
-            $plan->delete();
-
-            return redirect()->back()->with('success', 'Xoá gói tập thành công!');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Có lỗi xảy ra khi xoá: ' . $e->getMessage());
-        }
+        $features     = PlanFeature::all();
+        $planFeatures = $membershipPlan->features->keyBy('feature_id');
+        return view('admin.pages.plans.edit', compact('membershipPlan', 'features', 'planFeatures'));
     }
 
+    public function update(UpdateMembershipPlanRequest $request, MembershipPlan $membershipPlan)
+    {
+        $this->planService->updatePlan($membershipPlan, $request->validated());
+        return redirect()->route('admin.membership-plans.index')->with('success', 'Cập nhật gói tập thành công!');
+    }
+
+    public function destroy(MembershipPlan $membershipPlan)
+    {
+        $membershipPlan->features()->detach();
+        $membershipPlan->delete();
+        return redirect()->route('admin.membership-plans.index')->with('success', 'Xóa gói tập thành công!');
+    }
 }

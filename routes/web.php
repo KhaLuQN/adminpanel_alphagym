@@ -14,6 +14,7 @@ use App\Http\Controllers\admin\MemberSubscriptionController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
+use App\Http\Controllers\admin\TrainerController;
 use App\Http\Controllers\auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,16 +34,11 @@ Route::prefix('admin/member')->group(function () {
     Route::delete('/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
 
 });
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('membership-plans', MembershipPlanController::class);
 
-// Membership Plan routes
-Route::prefix('admin/package')->group(function () {
-    Route::get('/index', [MembershipplanController::class, 'index'])->name('admin.package.index');
-    Route::post('/update', [MembershipplanController::class, 'update'])->name('admin.package.update');
-    Route::post('/store', [MembershipplanController::class, 'store'])->name('admin.package.store');
-    Route::get('/create', [MembershipplanController::class, 'create'])->name('admin.package.create');
-    Route::delete('/{id}', [MembershipplanController::class, 'destroy'])->name('admin.package.destroy');
+    Route::resource('plan-features', PlanFeatureController::class)->except(['show']);
 });
-
 // Member Subscription routes
 Route::prefix('admin/subscriptions')->group(function () {
     Route::get('/create', [MemberSubscriptionController::class, 'create'])->name('admin.subscriptions.create');
@@ -64,6 +60,14 @@ Route::prefix('admin/equipment')->name('admin.equipment.')->group(function () {
     Route::post('/update', [EquipmentController::class, 'update'])->name('update');
 
     Route::delete('/{equipment}', [EquipmentController::class, 'destroy'])->name('destroy');
+});
+// trainers routes
+Route::prefix('admin/trainers')->name('admin.trainers.')->group(function () {
+    Route::get('/', [TrainerController::class, 'index'])->name('index');
+    Route::get('/create', [TrainerController::class, 'create'])->name('create');
+    Route::post('/', [TrainerController::class, 'store'])->name('store');
+    Route::put('/{trainerProfile}', [TrainerController::class, 'update'])->name('update');
+    Route::delete('/{trainerProfile}', [TrainerController::class, 'destroy'])->name('destroy');
 });
 
 // Checkin routes

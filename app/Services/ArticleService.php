@@ -15,8 +15,11 @@ class ArticleService
     public function createArticle(array $data): Article
     {
         if (isset($data['featured_image'])) {
+            $filename = time() . '_' . $data['featured_image']->getClientOriginalName();
 
-            $data['featured_image_url'] = $data['featured_image']->store('articles', 'public');
+            $path = $data['featured_image']->storeAs('articles', $filename, 'public');
+
+            $data['featured_image_url'] = 'storage/' . $path;
 
             unset($data['featured_image']);
         }
@@ -34,17 +37,20 @@ class ArticleService
     public function updateArticle(Article $article, array $data): Article
     {
         if (isset($data['featured_image'])) {
+
             if ($article->featured_image_url) {
-                Storage::disk('public')->delete($article->featured_image_url);
+                $pathToDelete = str_replace('storage/', '', $article->featured_image_url);
+                Storage::disk('public')->delete($pathToDelete);
             }
 
-            $data['featured_image_url'] = $data['featured_image']->store('articles', 'public');
+            $filename = time() . '_' . $data['featured_image']->getClientOriginalName();
+            $path     = $data['featured_image']->storeAs('articles', $filename, 'public');
 
+            $data['featured_image_url'] = 'storage/' . $path;
             unset($data['featured_image']);
         }
 
         $article->update($data);
-
         return $article;
     }
 

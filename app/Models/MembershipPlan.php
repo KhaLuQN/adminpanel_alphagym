@@ -24,4 +24,12 @@ class MembershipPlan extends Model
     {
         return $this->hasMany(MemberSubscription::class, 'plan_id');
     }
+    /**
+     * Một gói tập có thể có nhiều quyền lợi.
+     */
+    public function features()
+    {
+        return $this->belongsToMany(PlanFeature::class, 'membership_plan_feature', 'plan_id', 'feature_id')
+            ->withPivot('feature_value');
+    }
 }
