@@ -94,6 +94,3 @@
         </div>
     </div>
 @endsection
-@push('customjs')
-    @vite('resources/js/delete-confirmation.js')
-@endpush
