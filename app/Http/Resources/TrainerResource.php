@@ -15,21 +15,23 @@ class TrainerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'               => $this->id,
+            'id'                => $this->id,
 
-            'full_name'        => $this->member->full_name,
+            'full_name'         => $this->member->full_name,
 
-            'photo_url'        => $this->photo_url
+            'photo_url'         => $this->photo_url
             ? asset(Storage::url($this->photo_url))
             : null,
-            'specialty'        => $this->specialty,
-            'bio'              => $this->bio,
-            'experience_years' => $this->experience_years,
-            'certifications'   => $this->certifications,
-            'facebook_url'     => $this->facebook_url,
-            'instagram_url'    => $this->instagram_url,
-            'slug'             => $this->slug,
-            'badge_class'      => $this->badge_class,
+            'specialty'         => $this->specialty,
+            'bio'               => $this->bio,
+            'experience_years'  => $this->experience_years,
+            'certifications'    => $this->certifications,
+            'facebook_url'      => $this->facebook_url,
+            'instagram_url'     => $this->instagram_url,
+            'slug'              => $this->slug,
+            'price_per_session' => $this->price_per_session,
+            'average_rating'    => $this->average_rating,
+            'badge_class'       => $this->badge_class,
         ];
     }
 }
