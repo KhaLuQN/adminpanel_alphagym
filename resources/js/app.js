@@ -14,3 +14,8 @@ if (document.querySelector(".datatable")) {
     });
 }
 import "remixicon/fonts/remixicon.css";
+if (document.querySelector("[data-confirm-delete]")) {
+    import("./delete-confirmation.js").then(() => {
+        console.log("delete-confirmation.js loaded");
+    });
+}
