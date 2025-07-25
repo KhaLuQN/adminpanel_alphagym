@@ -1,6 +1,12 @@
 @extends('admin.layouts.master')
 
+@section('page_title', 'Bảng Điều Khiển')
 
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Quản lý mail</a></li>
+
+@endsection
 @section('content')
     <div class="p-6">
         <div class="flex justify-between items-center mb-4">

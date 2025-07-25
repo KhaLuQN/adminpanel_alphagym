@@ -1,6 +1,14 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Bảng Điều Khiển')
+@section('page_title', 'Bảng Điều Khiển')
+
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a class="link link-hover">Dashboard</a></li>
+
+@endsection
+
+
 
 @section('content')
     <div class="max-w-6xl mx-auto p-6 space-y-8">
@@ -269,12 +277,11 @@
                         datasets: [{
                             label: 'Doanh thu (VNĐ)',
                             data: revenueChartData.data,
-                            borderColor: 'hsl(var(--p))',
-                            backgroundColor: 'hsla(var(--p), 0.1)',
+
                             fill: true,
                             tension: 0.4,
                             pointBackgroundColor: 'hsl(var(--p))',
-                            pointBorderColor: '#fff',
+
                             pointBorderWidth: 2,
                             pointRadius: 5
                         }]
@@ -311,8 +318,7 @@
                         datasets: [{
                             label: 'Lượt Check-in',
                             data: activityChartData.data,
-                            backgroundColor: 'hsla(var(--a), 0.7)',
-                            borderColor: 'hsl(var(--a))',
+
                             borderWidth: 1,
                             borderRadius: 6
                         }]

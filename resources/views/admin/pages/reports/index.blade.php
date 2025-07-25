@@ -1,6 +1,12 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Báo cáo & Thống kê')
+@section('page_title', 'BÁO CÁO & THỐNG KÊ')
+
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Báo cáo và thống kê</a></li>
+
+@endsection
 
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
