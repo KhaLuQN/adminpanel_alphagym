@@ -307,7 +307,6 @@
 @endsection
 
 @push('customjs')
-    @vite('resources/js/confirmation-handler.js')
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

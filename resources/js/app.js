@@ -15,3 +15,4 @@ if (document.querySelector(".datatable")) {
 }
 import "remixicon/fonts/remixicon.css";
 import "./delete-confirmation.js";
+import "./confirmation-handler.js";
