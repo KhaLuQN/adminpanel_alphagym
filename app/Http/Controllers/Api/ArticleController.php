@@ -41,5 +41,18 @@ class ArticleController extends Controller
         return ArticleSliceResource::collection($articles);
 
     }
+    public function getRelatedArticles($slug)
+    {
+        $article = Article::where('slug', $slug)->firstOrFail();
+
+        $related = Article::where('article_id', '!=', $article->article_id)
+            ->where('article_category_id', $article->article_category_id)
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return ArticleSliceResource::collection($related);
+
+    }
 
 }
