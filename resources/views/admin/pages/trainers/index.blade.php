@@ -1,6 +1,12 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Quản lý Huấn luyện viên')
+@section('page_title', 'Bảng Điều Khiển')
+
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Quản lý huấn luyện viên</a></li>
+
+@endsection
 
 @section('content')
     <div class="p-6">
@@ -34,8 +40,7 @@
                                         <div class="avatar">
                                             <div class="w-12 rounded-full">
 
-                                                <img src="{{ asset('storage/images/trainers/trainer.jpg') }}"
-                                                    alt="Ảnh HLV">
+                                                <img src="{{ asset('storage/' . $trainer->photo_url) }}" alt="Ảnh HLV">
 
 
                                             </div>

@@ -1,5 +1,11 @@
 @extends('admin.layouts.master')
+@section('page_title', 'Bảng Điều Khiển')
 
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Chi tiết bài viết</a></li>
+
+@endsection
 @section('content')
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">Chi Tiết Bài Viết: {{ $article->title }}</h1>

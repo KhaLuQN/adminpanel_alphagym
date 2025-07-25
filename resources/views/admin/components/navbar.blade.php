@@ -11,11 +11,13 @@
                 </div>
             </div>
             <div>
-                <h1 class="text-lg font-bold">Quản lý Thành viên</h1>
+                <h1 class="text-lg font-bold">@yield('page_title', 'Trang Quản Trị')</h1>
                 <div class="breadcrumbs text-xs">
                     <ul>
-                        <li><a class="link link-hover">Admin</a></li>
-                        <li>Hội Viên</li>
+                        @section('page_title', 'Quản lý Thiết Bị')
+
+                        @yield('breadcrumbs')
+
                     </ul>
                 </div>
             </div>

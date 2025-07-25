@@ -1,7 +1,12 @@
 @extends('admin.layouts.master')
 
-@section('title', 'Thêm Huấn luyện viên mới')
+@section('page_title', 'Bảng Điều Khiển')
 
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Thêm huấn luyện viên</a></li>
+
+@endsection
 @section('content')
     <div class="p-6">
         <div class="card bg-base-100 shadow-xl">

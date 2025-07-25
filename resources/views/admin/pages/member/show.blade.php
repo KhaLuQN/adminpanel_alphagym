@@ -1,5 +1,11 @@
 @extends('admin.layouts.master')
+@section('page_title', 'Bảng Điều Khiển')
 
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Chi tiết hội viên</a></li>
+
+@endsection
 @section('content')
     <div class="p-6">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
