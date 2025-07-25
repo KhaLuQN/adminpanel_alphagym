@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\ArticleCategoryController;
-use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\admin\ArticleCategoryController;
+use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\CheckinController;
-use App\Http\Controllers\Admin\CommunicationLogController;
+use App\Http\Controllers\admin\CommunicationLogController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\EmailTemplateController;
 use App\Http\Controllers\admin\EquipmentController;
@@ -11,7 +11,7 @@ use App\Http\Controllers\admin\MemberController;
 use App\Http\Controllers\admin\MemberEngagementController;
 use App\Http\Controllers\admin\MembershipplanController;
 use App\Http\Controllers\admin\MemberSubscriptionController;
-use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
 use App\Http\Controllers\admin\TrainerController;
