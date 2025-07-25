@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleSliceResource;
 use App\Models\Article;
 
 class ArticleController extends Controller
@@ -29,4 +30,16 @@ class ArticleController extends Controller
         }
         return new ArticleResource($article);
     }
+    public function getHomeArticles()
+    {
+        $articles = Article::with('category')
+            ->where('status', 'published')
+            ->where('published_at', '<', now())
+            ->latest('published_at')
+            ->get();
+
+        return ArticleSliceResource::collection($articles);
+
+    }
+
 }
