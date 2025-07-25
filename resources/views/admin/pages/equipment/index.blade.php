@@ -92,6 +92,3 @@
 
     @include('admin.pages.equipment.components.edit')
 @endsection
-@push('customjs')
-    @vite('resources/js/delete-confirmation.js')
-@endpush
