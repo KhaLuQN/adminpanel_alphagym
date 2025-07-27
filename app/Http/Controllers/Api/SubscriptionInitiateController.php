@@ -51,8 +51,11 @@ class SubscriptionInitiateController extends Controller
                 ->first();
 
             if (! $member) {
-                return response()->json(['message' => 'Existing member not found.'], 404);
+                return response()->json([
+                    'message' => 'Không tìm thấy hội viên với thông tin đã cung cấp.',
+                ], 400);
             }
+
         }
 
         $plan = MembershipPlan::find($request->membership_plan_id);
