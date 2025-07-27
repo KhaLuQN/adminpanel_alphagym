@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ArticleCategoryController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\MembershipPlanController;
+use App\Http\Controllers\Api\SubscriptionInitiateController;
 use App\Http\Controllers\Api\TestimonialController;
 use App\Http\Controllers\Api\TrainerController;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +23,5 @@ Route::post('/testimonials', [TestimonialController::class, 'store']);
 Route::get('/trainers', [TrainerController::class, 'index']);
 
 Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
+
+Route::post('/subscription/initiate', [SubscriptionInitiateController::class, 'initiate']);

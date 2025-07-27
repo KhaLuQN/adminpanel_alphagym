@@ -16,11 +16,11 @@ class VnpayService
         $this->vnpHashSecret = env('VNPAY_HASHSECRET');
     }
 
-    public function generatePaymentUrl($transactionId, $amount)
+    public function generatePaymentUrl($transactionId, $amount, $orderInfo = null)
     {
         $vnp_TxnRef = (string) $transactionId;
 
-        $vnp_OrderInfo = 'Thanh toan goi tap gym ' . $vnp_TxnRef;
+        $vnp_OrderInfo = $orderInfo ?? 'Thanh toan goi tap gym ' . $vnp_TxnRef;
         $vnp_OrderType = 'gym_membership';
         $vnp_Amount    = (int) ($amount * 100);
 
