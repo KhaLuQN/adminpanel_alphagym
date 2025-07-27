@@ -1,23 +1,44 @@
 @extends('auth.layout')
 
 @section('conten')
-    <div class="flex items-center justify-center min-h-screen bg-gray-100">
-        <div class="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-            <div class="bg-blue-600 p-6 rounded-t-lg text-white text-center">
-                <h3 class="text-2xl font-bold">Đăng Nhập</h3>
-                <p class="text-sm">Phần mềm quản lý phòng Gym</p>
-            </div>
-            <form method="POST" action="{{ route('login.auth') }}" class="space-y-4">
+    <div class="min-h-screen flex items-center justify-center bg-base-200">
+        <div class="w-full max-w-md shadow-xl rounded-xl bg-base-100">
+
+            <form method="POST" action="{{ route('login.auth') }}" class="p-6 space-y-4">
                 @csrf
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">Tên đăng nhập</label>
-                    <input type="text" name="username" id="username" placeholder="username" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <div class="p-6 bg-primary text-primary-content rounded-t-xl text-center">
+                    <h3 class="text-2xl font-bold">Đăng Nhập</h3>
+                    <p class="text-sm">Phần mềm quản lý phòng Gym</p>
                 </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                    <input type="password" name="password" id="password" placeholder="Password" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <div class="flex bg-indigo-700 p-3">
+                    <div class="w-full max-w-xs m-auto bg-indigo-100 rounded p-5">
+                        <header>
+                            <img class="w-20 mx-auto mb-5" src="{{ asset('images/admin.png') }}" />
+                        </header>
+                        <form>
+                            <div>
+                                <label class="block mb-2 text-indigo-500" for="username">Username</label>
+                                <input
+                                    class="w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
+                                    type="text" name="username" id="username" placeholder="Nhập username" required>
+                            </div>
+                            <div>
+                                <label class="block mb-2 text-indigo-500" for="password">Password</label>
+                                <input
+                                    class="w-full p-2 mb-6 text-indigo-700 border-b-2 border-indigo-500 outline-none focus:bg-gray-300"
+                                    type="password" name="password"id="password" placeholder="Nhập mật khẩu" required>
+                            </div>
+                            <div>
+                                <input
+                                    class="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded"
+                                    type="submit">
+                            </div>
+                        </form>
+
+                    </div>
                 </div>
-                <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Đăng nhập</button>
+
+
             </form>
         </div>
     </div>
