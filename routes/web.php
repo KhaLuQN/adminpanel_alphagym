@@ -114,4 +114,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::get('/vnpay/return', [VnpayController::class, 'handleReturn'])->name('vnpay.return');
-Route::get('/test-vnpay', [VnpayController::class, 'testVnpay']);

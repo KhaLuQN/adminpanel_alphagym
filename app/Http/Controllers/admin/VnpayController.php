@@ -45,22 +45,21 @@ class VnpayController extends Controller
             return redirect()->route('admin.subscriptions.create')->with('error', 'Không tìm thấy giao dịch thanh toán.');
         }
 
-        if ($payment->status !== 'pending') {
-            return redirect()->route('admin.subscriptions.create')->with('info', 'Giao dịch này đã được xử lý trước đó.');
+        if ($payment->payment_status === 'paid') {
+            return redirect()->route('admin.subscriptions.create')->with('error', 'Giao dịch này đã được xử lý trước đó.');
         }
 
         if ($responseCode === '00') {
             // Giao dịch THÀNH CÔNG
-            $payment->status       = 'paid';
-            $payment->payment_code = $request->input('vnp_TransactionNo');
-            $payment->bank_code    = $request->input('vnp_BankCode');
-            $payment->paid_at      = Carbon::createFromFormat('YmdHis', $request->input('vnp_PayDate'));
+            $payment->payment_status = 'paid';
+
+            $payment->payment_date = Carbon::createFromFormat('YmdHis', $request->input('vnp_PayDate'));
             $payment->save();
 
             return redirect()->route('admin.subscriptions.create')->with('success', 'Thanh toán thành công!');
         } else {
             // Giao dịch THẤT BẠI
-            $payment->status = 'failed';
+            $payment->payment_status = 'failed';
             $payment->save();
 
             return redirect()->route('admin.subscriptions.create')->with('error', 'Thanh toán thất bại hoặc đã bị hủy.');

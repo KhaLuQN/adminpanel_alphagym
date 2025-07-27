@@ -26,9 +26,11 @@
 
 </head>
 
-@include('admin.components.toast')
 
 <body>
+
+    @include('admin.components.toast')
+
     <div class="drawer lg:drawer-open">
         <input id="drawer-toggle" type="checkbox" class="drawer-toggle" />
         <div class="drawer-content flex flex-col">
