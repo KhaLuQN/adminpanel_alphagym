@@ -72,12 +72,11 @@
                                                     value="{{ $package->plan_id }}" class="package-radio hidden"
                                                     data-price="{{ $package->price }}"
                                                     data-discount="{{ $package->discount_percent }}"
-                                                    data-duration="{{ $package->duration_days }}"
-                                                    {{ $loop->first ? 'checked' : '' }}>
+                                                    data-duration="{{ $package->duration_days }}">
                                                 <label for="package-{{ $package->plan_id }}"
                                                     class="package-label cursor-pointer">
                                                     <div
-                                                        class="card package-card border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 {{ $loop->first ? 'border-primary bg-primary/5' : 'border-base-300 hover:border-primary' }}">
+                                                        class="card package-card border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                                         <div class="card-body relative">
                                                             <!-- Selected Indicator -->
                                                             <div
@@ -172,7 +171,7 @@
                                         <input class="join-item btn btn-outline flex-1" type="radio" name="payment_method"
                                             value="cash" checked aria-label="Tiền mặt" />
                                         <input class="join-item btn btn-outline flex-1" type="radio" name="payment_method"
-                                            value="momo" aria-label="Chuyển khoản MoMo" />
+                                            value="vnpay" aria-label="Chuyển khoản VNPAY" />
                                     </div>
                                 </div>
 
@@ -232,9 +231,12 @@
         }
 
         .package-radio:checked+.package-label .package-card {
-            border-color: hsl(var(--p)) !important;
-            background-color: hsl(var(--p) / 0.05) !important;
+            border-color: #dc2626 !important;
+            /* đỏ */
+            background-color: rgba(220, 38, 38, 0.05) !important;
+            /* đỏ nhạt */
         }
+
 
         .package-radio:checked+.package-label .selected-indicator {
             opacity: 1;
@@ -262,109 +264,53 @@
     </style>
 @endsection
 @push('customjs')
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script>
         $(document).ready(function() {
+            updateSummary();
 
-            $('.select2-member').select2({
-                placeholder: "Tìm hội viên theo tên, SĐT hoặc mã RFID...",
-                allowClear: true,
-                width: '100%',
-                matcher: function(params, data) {
-                    if ($.trim(params.term) === '') {
-                        return data;
-                    }
-
-                    var term = params.term.toLowerCase();
-                    var text = data.text.toLowerCase();
-                    var $option = $(data.element);
-                    var name = ($option.data('name') || '').toString().toLowerCase();
-                    var phone = ($option.data('phone') || '').toString().toLowerCase();
-                    var rfid = ($option.data('rfid') || '').toString().toLowerCase();
-
-                    if (text.indexOf(term) > -1 ||
-                        name.indexOf(term) > -1 ||
-                        phone.indexOf(term) > -1 ||
-                        rfid.indexOf(term) > -1) {
-                        return data;
-                    }
-
-                    return null;
-                },
-                templateResult: function(data) {
-                    if (data.loading) {
-                        return data.text;
-                    }
-
-                    if (!data.id) {
-                        return data.text;
-                    }
-
-                    var $option = $(data.element);
-                    var name = $option.text().split(' - ')[0];
-                    var phone = $option.data('phone') || '';
-                    var rfid = $option.data('rfid') || '';
-
-                    var $result = $('<div>');
-                    $result.append('<div class="font-semibold">' + name + '</div>');
-
-                    if (phone) {
-                        $result.append('<small class="text-gray-500"><i class="ri-phone-line"></i> ' +
-                            phone + '</small>');
-                    }
-
-                    if (rfid) {
-                        $result.append(
-                            '<br><small class="text-blue-600"><i class="ri-bank-card-line"></i> RFID: ' +
-                            rfid + '</small>');
-                    }
-
-                    return $result;
-                },
-                templateSelection: function(data) {
-                    if (!data.id) {
-                        return data.text;
-                    }
-
-                    var $option = $(data.element);
-                    var name = $option.text().split(' - ')[0];
-                    var phone = $option.data('phone') || '';
-
-                    return name + (phone ? ' - ' + phone : '');
-                }
+            $('input[name="start_date"]').on('change', function() {
+                updateSummary();
             });
 
 
-            $('.package-label').click(function(e) {
-                e.preventDefault();
-
-
-                $('.package-card').removeClass('border-primary bg-primary/5');
-                $('.package-radio').prop('checked', false);
-
-
-                $(this).find('.package-card').addClass('border-primary bg-primary/5');
-                $(this).find('.package-radio').prop('checked', true);
-
-
-                $(this).find('.package-radio').trigger('change');
+            $('.package-radio').on('change', function() {
+                updateSummary();
             });
 
+            const firstPackage = $('.package-radio').first();
+            if (firstPackage.length && !$('.package-radio:checked').length) {
+                firstPackage.prop('checked', true).trigger('change');
+            }
 
-            $('.package-radio').change(function() {
-                const price = $(this).data('price');
-                const discount = $(this).data('discount');
-                const duration = $(this).data('duration');
+            function updateSummary() {
+                const selectedPackage = $('.package-radio:checked');
 
-                const total = price * (1 - discount / 100);
-                $('#totalAmount').text(total.toLocaleString('vi-VN') + 'đ');
+                if (selectedPackage.length === 0) return;
+
+                const price = parseFloat(selectedPackage.data('price')) || 0;
+                const discount = parseFloat(selectedPackage.data('discount')) || 0;
+                const duration = parseInt(selectedPackage.data('duration')) || 0;
+
+                const finalAmount = Math.round(price * (1 - discount / 100));
+                $('#totalAmount').text(finalAmount.toLocaleString('vi-VN') + 'đ');
 
                 const startDate = $('input[name="start_date"]').val();
                 if (startDate) {
-                    const expiryDate = new Date(startDate);
-                    expiryDate.setDate(expiryDate.getDate() + parseInt(duration));
-                    $('#expiryDate').text(expiryDate.toLocaleDateString('vi-VN'));
+                    const expiry = new Date(startDate);
+                    expiry.setDate(expiry.getDate() + duration);
+                    const formattedExpiry = expiry.toLocaleDateString('vi-VN');
+                    $('#expiryDate').text(formattedExpiry);
+                } else {
+                    $('#expiryDate').text('Chưa chọn ngày');
                 }
-            });
+            }
+
+
+
+
+
 
 
             $('input[name="start_date"]').change(function() {
