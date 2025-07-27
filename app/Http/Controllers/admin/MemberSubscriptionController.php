@@ -29,7 +29,7 @@ class MemberSubscriptionController extends Controller
             'member_id'      => 'required|exists:members,member_id',
             'package_id'     => 'required|exists:membership_plans,plan_id',
             'start_date'     => 'required|date|after_or_equal:today',
-            'payment_method' => 'required|in:cash,momo',
+            'payment_method' => 'required|in:cash,vnpay,momo',
         ]);
 
         $package = MembershipPlan::findOrFail($request->package_id);
@@ -54,21 +54,21 @@ class MemberSubscriptionController extends Controller
         if ($request->payment_method === 'cash') {
 
             $subscription = MemberSubscription::create([
-                'member_id'      => $request->member_id,
-                'plan_id'        => $package->plan_id,
-                'start_date'     => $startDate->toDateString(),
-                'end_date'       => $endDate->toDateString(),
-                'actual_price'   => $actualPrice,
-                'payment_status' => 'paid',
-                'payment_date'   => now(),
+                'member_id'    => $request->member_id,
+                'plan_id'      => $package->plan_id,
+                'start_date'   => $startDate->toDateString(),
+                'end_date'     => $endDate->toDateString(),
+                'actual_price' => $actualPrice,
+
             ]);
 
             Payment::create([
                 'subscription_id' => $subscription->subscription_id,
                 'amount'          => $actualPrice,
                 'payment_date'    => now(),
-                'payment_method'  => 'Cash',
+                'payment_method'  => 'cash',
                 'notes'           => 'Thanh toán tiền mặt tại quầy',
+                'payment_status'  => 'paid',
             ]);
 
             return redirect()->back()->with('success', 'Đăng ký gói tập thành công và thanh toán tiền mặt!');
