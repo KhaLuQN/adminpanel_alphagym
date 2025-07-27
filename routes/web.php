@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
 use App\Http\Controllers\admin\TrainerController;
+use App\Http\Controllers\admin\VnpayController;
 use App\Http\Controllers\auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -111,3 +112,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
+
+Route::get('/vnpay/return', [VnpayController::class, 'handleReturn'])->name('vnpay.return');
+Route::get('/test-vnpay', [VnpayController::class, 'testVnpay']);

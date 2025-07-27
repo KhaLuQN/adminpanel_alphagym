@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Checkin;
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CheckinController extends Controller
 {
@@ -72,10 +73,13 @@ class CheckinController extends Controller
         }
         $today = \Carbon\Carbon::today();
 
-        $hasActiveSubscription = $member->subscriptions()
-            ->where('payment_status', 'paid')
-            ->where('end_date', '>=', $today)
+        $hasActiveSubscription = DB::table('membersubscriptions')
+            ->join('payments', 'membersubscriptions.subscription_id', '=', 'payments.subscription_id')
+            ->where('membersubscriptions.member_id', $member->member_id)
+            ->where('membersubscriptions.end_date', '>=', today())
+            ->where('payments.payment_status', 'paid')
             ->exists();
+
         if (! $hasActiveSubscription) {
             return back()->with('error', 'Hội viên ' . $member->full_name . ' đã hết hạn gói tập. Vui lòng gia hạn!');
         }

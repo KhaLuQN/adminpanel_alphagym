@@ -16,7 +16,7 @@ class MemberSubscription extends Model
         'start_date',
         'end_date',
         'actual_price',
-        'payment_status',
+
         'payment_date',
     ];
 
