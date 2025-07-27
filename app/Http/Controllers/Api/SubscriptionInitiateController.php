@@ -27,7 +27,7 @@ class SubscriptionInitiateController extends Controller
             'member_identifier'  => 'required_if:customer_type,existing|string',
             'customer_name'      => 'required_if:customer_type,new|string|max:255',
             'customer_email'     => 'required_if:customer_type,new|email|unique:members,email|max:255',
-            'customer_phone'     => 'required_if:customer_type,new|string|max:20',
+            'customer_phone'     => 'required_if:customer_type,new|regex:/^0[0-9]{9}$/|max:20|unique:members,phone',
             'membership_plan_id' => 'required|exists:membership_plans,plan_id',
             'payment_method'     => 'required|in:vnpay',
         ]);
