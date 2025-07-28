@@ -6,7 +6,7 @@ use App\Models\Member;
 use App\Models\MembershipPlan;
 use App\Models\MemberSubscription;
 use App\Models\Payment;
-use App\Services\Payments\VnpayService;
+use App\Services\Payments\FrontendVnpayService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +15,7 @@ class SubscriptionInitiateController extends Controller
 {
     protected $vnpayService;
 
-    public function __construct(VnpayService $vnpayService)
+    public function __construct(FrontendVnpayService $vnpayService)
     {
         $this->vnpayService = $vnpayService;
     }

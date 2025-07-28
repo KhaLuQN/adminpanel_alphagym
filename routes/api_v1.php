@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiVnpayReturnController;
 use App\Http\Controllers\Api\ArticleCategoryController;
 use App\Http\Controllers\Api\ArticleController;
 use App\Http\Controllers\Api\MembershipPlanController;
@@ -25,3 +26,5 @@ Route::get('/trainers', [TrainerController::class, 'index']);
 Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
 
 Route::post('/subscription/initiate', [SubscriptionInitiateController::class, 'initiate']);
+
+Route::get('/vnpay/return', [ApiVnpayReturnController::class, 'handleReturn'])->name('api.vnpay.return');

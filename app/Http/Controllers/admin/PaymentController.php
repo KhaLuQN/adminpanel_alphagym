@@ -13,7 +13,7 @@ class PaymentController extends Controller
 
         $query->with(['subscription.member', 'subscription.plan']);
 
-        $payments = $query->latest('payment_date')->paginate(20)->withQueryString();
+        $payments = $query->latest('payment_date')->get();
 
         return view('admin.pages.payments.index', [
             'payments' => $payments,

@@ -8,7 +8,8 @@ class RevenueReportService
 {
     public function generate($startDate, $endDate)
     {
-        $baseQuery = Payment::whereBetween('payment_date', [$startDate, $endDate]);
+        $baseQuery = Payment::where('payment_status', 'paid')
+            ->whereBetween('payment_date', [$startDate, $endDate]);
 
         $kpiData = (clone $baseQuery)->select(
             DB::raw('SUM(amount) as totalRevenue'),

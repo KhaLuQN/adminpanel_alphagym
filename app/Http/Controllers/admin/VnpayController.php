@@ -41,7 +41,7 @@ class VnpayController extends Controller
         $payment = Payment::find($paymentId);
 
         if (! $payment) {
-            Log::error('VNPAY Return: Payment not found', ['vnp_TxnRef' => $subscriptionId]);
+            Log::error('VNPAY Return: Payment not found', ['vnp_TxnRef' => $paymentId]);
             return redirect()->route('admin.subscriptions.create')->with('error', 'Không tìm thấy giao dịch thanh toán.');
         }
 
