@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ApiVnpayReturnController;
 use App\Http\Controllers\Api\ArticleCategoryController;
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\SubscriptionInitiateController;
 use App\Http\Controllers\Api\TestimonialController;
@@ -28,3 +29,4 @@ Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
 Route::post('/subscription/initiate', [SubscriptionInitiateController::class, 'initiate']);
 
 Route::get('/vnpay/return', [ApiVnpayReturnController::class, 'handleReturn'])->name('api.vnpay.return');
+Route::post('/contacts', [ContactController::class, 'store']);

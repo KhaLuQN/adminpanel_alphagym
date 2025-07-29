@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Member;
 use App\Models\MembershipPlan;
-use App\Models\Payment; // Thêm dòng này
+use App\Models\Payment;
 use App\Services\MemberSubscriptionService;
 use App\Services\Payments\VnpayService;
 use Illuminate\Http\Request;

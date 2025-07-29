@@ -3,9 +3,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MemberSubscription extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'membersubscriptions';
 
     protected $primaryKey = 'subscription_id';
@@ -31,7 +34,7 @@ class MemberSubscription extends Model
     }
     public function payments()
     {
-        return $this->hasMany(Payment::class);
+        return $this->hasMany(Payment::class, 'subscription_id', 'subscription_id');
     }
 
 }

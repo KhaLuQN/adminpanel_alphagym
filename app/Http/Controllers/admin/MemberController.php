@@ -56,9 +56,11 @@ class MemberController extends Controller
 
     public function show($id)
     {
-        $member = Member::with(['checkins' => function ($query) {
-            $query->orderBy('checkin_time', 'desc')->limit(10);
-        }])->findOrFail($id);
+        $member = Member::with([
+            'checkins' => function ($query) {
+                $query->orderBy('checkin_time', 'desc')->limit(10);
+            },
+        ])->findOrFail($id);
 
         $totalCheckins     = $member->checkins()->count();
         $lastMonthCheckins = $member->checkins()
@@ -66,11 +68,18 @@ class MemberController extends Controller
             ->count();
         $avgSessionTime = $this->calculateAvgSessionTime($member);
 
+        $subscriptions = $member->subscriptions()
+            ->whereHas('payments', function ($query) {
+                $query->where('payment_status', 'paid');
+            })
+            ->get();
+
         return view('admin.pages.member.show', compact(
             'member',
             'totalCheckins',
             'lastMonthCheckins',
-            'avgSessionTime'
+            'avgSessionTime',
+            'subscriptions'
         ));
     }
 

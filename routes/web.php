@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\ArticleCategoryController;
 use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\CheckinController;
 use App\Http\Controllers\admin\CommunicationLogController;
+use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\EmailTemplateController;
 use App\Http\Controllers\admin\EquipmentController;
@@ -38,7 +39,6 @@ Route::prefix('admin/member')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('membership-plans', MembershipPlanController::class);
 
-    Route::resource('plan-features', PlanFeatureController::class)->except(['show']);
 });
 // Member Subscription routes
 Route::prefix('admin/subscriptions')->group(function () {
@@ -114,3 +114,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::get('/vnpay/return', [VnpayController::class, 'handleReturn'])->name('vnpay.return');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::post('/contacts/{contact}/resolve', [ContactController::class, 'resolve'])->name('contacts.resolve');
+    Route::post('/contacts/{contact}/unresolve', [ContactController::class, 'unresolve'])->name('contacts.unresolve');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
+});

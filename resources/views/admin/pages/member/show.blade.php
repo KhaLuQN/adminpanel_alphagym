@@ -115,7 +115,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($member->subscriptions as $sub)
+                                    @forelse($subscriptions as $sub)
                                         <tr>
                                             <td>{{ optional($sub->plan)->plan_name ?? 'N/A' }}</td>
 

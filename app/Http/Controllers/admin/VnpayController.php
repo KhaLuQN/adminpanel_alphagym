@@ -41,7 +41,7 @@ class VnpayController extends Controller
         $payment = Payment::find($paymentId);
 
         if (! $payment) {
-            Log::error('VNPAY Return: Payment not found', ['vnp_TxnRef' => $paymentId]);
+
             return redirect()->route('admin.subscriptions.create')->with('error', 'Không tìm thấy giao dịch thanh toán.');
         }
 
@@ -58,9 +58,12 @@ class VnpayController extends Controller
 
             return redirect()->route('admin.subscriptions.create')->with('success', 'Thanh toán thành công!');
         } else {
-            // Giao dịch THẤT BẠI
+
             $payment->payment_status = 'failed';
             $payment->save();
+            if ($payment->memberSubscription) {
+                $payment->memberSubscription->delete();
+            }
 
             return redirect()->route('admin.subscriptions.create')->with('error', 'Thanh toán thất bại hoặc đã bị hủy.');
         }

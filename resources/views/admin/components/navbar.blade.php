@@ -36,45 +36,7 @@
 
         </a>
         <!-- Notifications -->
-        <div class="dropdown dropdown-end">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-                <div class="indicator">
-                    <i class="ri-notification-2-line text-lg"></i>
-                    <span class="badge badge-sm badge-error indicator-item">3</span>
-                </div>
-            </div>
-            <div tabindex="0" class="dropdown-content z-[1] card card-compact w-80 p-2 shadow-xl bg-base-100">
-                <div class="card-body">
-                    <h3 class="card-title">Thông báo</h3>
-                    <div class="space-y-3">
-                        <div class="alert alert-success">
-                            <i class="ri-user-add-line"></i>
-                            <div>
-                                <div class="font-bold">Thành viên mới đăng ký</div>
-                                <div class="text-xs">Nguyễn Văn A vừa đăng ký gói Premium</div>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            <i class="ri-money-dollar-circle-line"></i>
-                            <div>
-                                <div class="font-bold">Thanh toán thành công</div>
-                                <div class="text-xs">Trần Thị B đã thanh toán phí tháng 6</div>
-                            </div>
-                        </div>
-                        <div class="alert alert-warning">
-                            <i class="ri-tools-line"></i>
-                            <div>
-                                <div class="font-bold">Thiết bị cần bảo trì</div>
-                                <div class="text-xs">Máy chạy bộ số 3 cần được kiểm tra</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <button class="btn btn-sm btn-block">Xem tất cả</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('admin.components.notifications')
 
         <!-- Messages -->
         <div class="dropdown dropdown-end">
