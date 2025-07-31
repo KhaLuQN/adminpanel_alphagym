@@ -6,7 +6,6 @@ use App\Http\Requests\Member\StoreMemberRequest;
 use App\Http\Requests\Member\UpdateMemberRequest;
 use App\Models\Member;
 use App\Services\MemberService;
-use Carbon\Carbon;
 
 class MemberController extends Controller
 {
@@ -19,17 +18,12 @@ class MemberController extends Controller
 
     public function index()
     {
-
-        $members = Member::select('member_id', 'full_name', 'phone', 'status', 'img', 'rfid_card_id')
-            ->latest('member_id')
-            ->get();
-
+        $members = $this->memberService->getMembersForIndex();
         return view('admin.pages.member.index', compact('members'));
     }
 
     public function create()
     {
-
         return view('admin.pages.member.create');
     }
 
@@ -43,10 +37,22 @@ class MemberController extends Controller
         }
     }
 
-    public function update(UpdateMemberRequest $request)
+    public function show(Member $member)
     {
+        $data = $this->memberService->getMemberProfileData($member);
+        return view('admin.pages.member.show', $data);
+    }
+
+    public function edit(Member $member)
+    {
+
+        return view('admin.pages.member.edit', compact('member'));
+    }
+
+    public function update(UpdateMemberRequest $request, Member $member)
+    {
+
         try {
-            $member = Member::findOrFail($request->validated()['member_id']);
             $this->memberService->updateMember($member, $request->validated());
             return redirect()->back()->with('success', 'Cập nhật thông tin thành viên thành công!');
         } catch (\Exception $e) {
@@ -54,60 +60,10 @@ class MemberController extends Controller
         }
     }
 
-    public function show($id)
+    public function destroy(Member $member)
     {
-        $member = Member::with(['checkins' => function ($query) {
-            $query->orderBy('checkin_time', 'desc')->limit(10);
-        }])->findOrFail($id);
-
-        $totalCheckins     = $member->checkins()->count();
-        $lastMonthCheckins = $member->checkins()
-            ->where('checkin_time', '>=', Carbon::now()->subMonth())
-            ->count();
-        $avgSessionTime = $this->calculateAvgSessionTime($member);
-
-        return view('admin.pages.member.show', compact(
-            'member',
-            'totalCheckins',
-            'lastMonthCheckins',
-            'avgSessionTime'
-        ));
-    }
-
-    private function calculateAvgSessionTime($member)
-    {
-        $sessions = $member->checkins()
-            ->whereNotNull('checkout_time')
-            ->get();
-
-        if ($sessions->isEmpty()) {
-            return null;
-        }
-
-        $totalSeconds = 0;
-        foreach ($sessions as $session) {
-            $totalSeconds += $session->checkin_time->diffInSeconds($session->checkout_time);
-        }
-
-        $avgSeconds = $totalSeconds / $sessions->count();
-
-        return [
-            'hours'   => floor($avgSeconds / 3600),
-            'minutes' => floor(($avgSeconds % 3600) / 60),
-        ];
-    }
-
-    public function destroy($id)
-    {
-        $member = Member::find($id);
-
-        if (! $member) {
-            return redirect()->route('admin.members.index')->with('error', 'Không tìm thấy hội viên.');
-        }
-
         try {
-
-            $member->delete();
+            $this->memberService->deleteMember($member);
             return redirect()->route('admin.members.index')->with('success', 'Xóa hội viên thành công.');
         } catch (\Exception $e) {
             return redirect()->route('admin.members.index')->with('error', 'Xóa thất bại: ' . $e->getMessage());

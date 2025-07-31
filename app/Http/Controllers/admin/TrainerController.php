@@ -2,23 +2,28 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
 use App\Models\TrainerProfile;
+use App\Services\TrainerService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class TrainerController extends Controller
 {
+    protected $trainerService;
+
+    public function __construct(TrainerService $trainerService)
+    {
+        $this->trainerService = $trainerService;
+    }
+
     public function index()
     {
-        $trainers = TrainerProfile::with('member')->latest()->paginate(10);
-
+        $trainers = $this->trainerService->getTrainersForIndex();
         return view('admin.pages.trainers.index', compact('trainers'));
     }
 
     public function create()
     {
-        $members = Member::whereDoesntHave('trainerProfile')->get();
+        $members = $this->trainerService->getMembersForCreate();
         return view('admin.pages.trainers.create', compact('members'));
     }
 
@@ -35,11 +40,7 @@ class TrainerController extends Controller
             'instagram_url'    => 'nullable|url',
         ]);
 
-        if ($request->hasFile('photo')) {
-            $validated['photo_url'] = $request->file('photo')->store('trainers', 'public');
-        }
-
-        TrainerProfile::create($validated);
+        $this->trainerService->createTrainer($validated);
 
         return redirect()->route('admin.trainers.index')->with('success', 'Thêm huấn luyện viên thành công!');
     }
@@ -56,25 +57,14 @@ class TrainerController extends Controller
             'instagram_url'    => 'nullable|url',
         ]);
 
-        if ($request->hasFile('photo')) {
-            // Xóa ảnh cũ nếu có
-            if ($trainerProfile->photo_url) {
-                Storage::disk('public')->delete($trainerProfile->photo_url);
-            }
-            $validated['photo_url'] = $request->file('photo')->store('trainers', 'public');
-        }
-
-        $trainerProfile->update($validated);
+        $this->trainerService->updateTrainer($trainerProfile, $validated);
 
         return redirect()->route('admin.trainers.index')->with('success', 'Cập nhật thông tin HLV thành công!');
     }
 
     public function destroy(TrainerProfile $trainerProfile)
     {
-        if ($trainerProfile->photo_url) {
-            Storage::disk('public')->delete($trainerProfile->photo_url);
-        }
-        $trainerProfile->delete();
+        $this->trainerService->deleteTrainer($trainerProfile);
         return redirect()->route('admin.trainers.index')->with('success', 'Đã xóa HLV thành công!');
     }
 }

@@ -39,35 +39,30 @@
                 <div class="stat-title">Doanh thu hôm nay</div>
                 <div class="stat-value text-success">{{ number_format($todayRevenue, 0) }}
                 </div>
-                <div class="stat-desc text-success">↗︎ 8.5% so với hôm qua</div>
             </div>
 
             <div class="stat bg-base-100 shadow-lg rounded-box border border-info/20">
                 <div class="stat-figure text-info"><i class="ri-user-add-fill text-3xl"></i></div>
                 <div class="stat-title">Thành viên mới</div>
                 <div class="stat-value text-info">{{ $newMembersCount }}</div>
-                <div class="stat-desc text-info">↗︎ 3 so với hôm qua</div>
             </div>
 
             <div class="stat bg-base-100 shadow-lg rounded-box border border-accent/20">
                 <div class="stat-figure text-accent"><i class="ri-walk-line text-3xl"></i></div>
                 <div class="stat-title">Lượt Check-in</div>
                 <div class="stat-value text-accent">{{ $checkinsToday }}</div>
-                <div class="stat-desc text-accent">↗︎ 12% so với hôm qua</div>
             </div>
 
             <div class="stat bg-base-100 shadow-lg rounded-box border border-secondary/20">
                 <div class="stat-figure text-secondary"><i class="ri-body-scan-line text-3xl"></i></div>
                 <div class="stat-title">Đang có mặt</div>
                 <div class="stat-value text-secondary">{{ $membersInGymCount }}</div>
-                <div class="stat-desc text-secondary">Thời gian thực</div>
             </div>
 
             <div class="stat bg-base-100 shadow-lg rounded-box border border-primary/20">
                 <div class="stat-figure text-primary"><i class="ri-team-fill text-3xl"></i></div>
                 <div class="stat-title">Tổng số Thành viên</div>
                 <div class="stat-value text-primary">{{ $totalMembers }}</div>
-                <div class="stat-desc text-primary">↗︎ 5.2% so với tháng trước</div>
             </div>
         </div>
 
@@ -206,56 +201,7 @@
 
 
 
-        {{-- Thống kê bổ sung --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="card bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-xl">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80">Gói tập phổ biến</p>
-                            <h3 class="text-2xl font-bold">Gói tập thử</h3>
-                        </div>
-                        <i class="ri-vip-crown-line text-3xl text-white/80"></i>
-                    </div>
-                </div>
-            </div>
 
-            <div class="card bg-gradient-to-r from-green-500 to-green-600 text-white shadow-xl">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80">Tỷ lệ tham gia</p>
-                            <h3 class="text-2xl font-bold">78%</h3>
-                        </div>
-                        <i class="ri-percent-line text-3xl text-white/80"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-xl">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80">Thiết bị đang hoạt động</p>
-                            <h3 class="text-2xl font-bold">32/45</h3>
-                        </div>
-                        <i class="ri-tools-line text-3xl text-white/80"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-xl">
-                <div class="card-body">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-white/80">Lớp học hôm nay</p>
-                            <h3 class="text-2xl font-bold">8</h3>
-                        </div>
-                        <i class="ri-group-line text-3xl text-white/80"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
 

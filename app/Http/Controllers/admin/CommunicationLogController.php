@@ -2,19 +2,24 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\CommunicationLog;
+use App\Services\CommunicationLogService;
 use Illuminate\Http\Request;
 
 class CommunicationLogController extends Controller
 {
+    protected $communicationLogService;
+
+    public function __construct(CommunicationLogService $communicationLogService)
+    {
+        $this->communicationLogService = $communicationLogService;
+    }
+
     /**
      * Hiển thị danh sách lịch sử gửi email với bộ lọc
      */
     public function index(Request $request)
     {
-        $query = CommunicationLog::query()->with(['member', 'sender']);
-
-        $logs = $query->latest('sent_at')->paginate(15)->withQueryString();
+        $logs = $this->communicationLogService->getCommunicationLogsForIndex($request->all());
 
         return view('admin.pages.communication-logs.index', [
             'logs'    => $logs,

@@ -115,21 +115,28 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($member->subscriptions as $sub)
+                                    @forelse($subscriptions as $sub)
                                         <tr>
                                             <td>{{ optional($sub->plan)->plan_name ?? 'N/A' }}</td>
 
 
                                             <td>{{ \Carbon\Carbon::parse($sub->start_date)->format('d/m/Y') }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($sub->end)->format('d/m/Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($sub->end_date)->format('d/m/Y') }}</td>
 
                                             <td>
-                                                @if (now()->between($sub->start_date, $sub->end_date))
-                                                    <span class="badge badge-success">Còn hạn</span>
+                                                @php
+                                                    $now = now();
+                                                @endphp
+
+                                                @if ($now->between($sub->start_date, $sub->end_date))
+                                                    <span class="badge badge-success">Đang diễn ra</span>
+                                                @elseif ($now->lt($sub->start_date))
+                                                    <span class="badge badge-info">Sắp diễn ra</span>
                                                 @else
                                                     <span class="badge badge-ghost">Hết hạn</span>
                                                 @endif
                                             </td>
+
                                         </tr>
                                     @empty
                                         <tr>

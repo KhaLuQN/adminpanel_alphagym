@@ -24,14 +24,14 @@
                                 <th>Tên thành viên</th>
                                 <th>SĐT</th>
                                 <th>Ngày tham gia</th>
-                                <th>Tháng đã đóng</th>
+
                                 <th>Trạng thái</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($members as $member)
-                                <tr class="border-b">
+                                <tr>
                                     <td>{{ $member->rfid_card_id }}</td>
                                     <td>{{ $member->full_name }}</td>
                                     <td>{{ $member->phone }}</td>
@@ -42,7 +42,7 @@
                                             N/A
                                         @endif
                                     </td>
-                                    <td>{{ $member->total_months_paid }}</td>
+
                                     <td>
                                         @if ($member->status == 'active')
                                             <span class="badge badge-success">Đang hoạt động</span>

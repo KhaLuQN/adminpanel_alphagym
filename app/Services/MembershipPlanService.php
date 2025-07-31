@@ -3,8 +3,20 @@ namespace App\Services;
 
 use App\Models\MembershipPlan;
 
+use App\Models\PlanFeature;
+
 class MembershipPlanService
 {
+    public function getPlansForIndex()
+    {
+        return MembershipPlan::withCount('features')->latest()->paginate(10);
+    }
+
+    public function getDataForCreateEdit()
+    {
+        return ['features' => PlanFeature::all()];
+    }
+
     public function createPlan(array $validatedData): MembershipPlan
     {
         $planData = [
@@ -53,5 +65,21 @@ class MembershipPlanService
             }
         }
         $plan->features()->sync($syncData);
+    }
+
+    public function deleteMembershipPlan(MembershipPlan $membershipPlan): void
+    {
+        $membershipPlan->features()->detach();
+        $membershipPlan->delete();
+    }
+
+    public function getApiActivePlans()
+    {
+        return MembershipPlan::with('features')->where('is_active', true)->get();
+    }
+
+    public function getPlanWithFeatures(MembershipPlan $membershipPlan)
+    {
+        return $membershipPlan->load('features');
     }
 }

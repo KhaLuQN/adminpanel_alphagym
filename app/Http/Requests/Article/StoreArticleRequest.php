@@ -17,7 +17,7 @@ class StoreArticleRequest extends FormRequest
             'excerpt'             => 'nullable|string|max:255',
             'featured_image'      => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'user_id'             => 'required|exists:users,id',
-            'article_category_id' => 'nullable|exists:article_categories,category_id',
+            'article_category_id' => 'required|exists:article_categories,category_id',
             'type'                => 'required|in:news,event,blog,promotion',
             'status'              => 'required|in:draft,published,archived',
             'published_at'        => 'nullable|date',

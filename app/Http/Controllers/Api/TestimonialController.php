@@ -12,7 +12,7 @@ class TestimonialController extends Controller
     public function index()
     {
         $testimonials = Testimonial::where('is_approved', 1)
-            ->where('display_on_website', 1)
+
             ->latest('submitted_at')
             ->limit(8)
             ->get();
@@ -33,7 +33,7 @@ class TestimonialController extends Controller
             'testimonial_content' => $validated['testimonial_content'],
             'rating'              => $validated['rating'] ?? null,
             'is_approved'         => 0,
-            'display_on_website'  => 0,
+
             'submitted_at'        => now(),
         ]);
 

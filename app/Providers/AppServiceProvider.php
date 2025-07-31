@@ -1,7 +1,8 @@
 <?php
-
 namespace App\Providers;
 
+use App\Models\Contact;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('*', function ($view) {
+            $contactNotifications = Contact::latest()->limit(5)->get();
+            $view->with('contactNotifications', $contactNotifications);
+        });
+
     }
 }

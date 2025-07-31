@@ -25,6 +25,7 @@
                                 <th>Gói Tập</th>
                                 <th>Số Tiền</th>
                                 <th>Phương Thức</th>
+                                <th>Trạng thái</th>
                                 <th>Ngày Thanh Toán</th>
                             </tr>
                         </thead>
@@ -46,6 +47,7 @@
                                             <span class="badge badge-info">{{ $payment->payment_method }}</span>
                                         @endif
                                     </td>
+                                    <td>{{ $payment->payment_status }}</td>
                                     <td>
                                         {{ \Carbon\Carbon::parse($payment->payment_date)->format('H:i d/m/Y') }}</td>
                                 </tr>

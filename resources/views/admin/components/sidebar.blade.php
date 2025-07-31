@@ -153,12 +153,10 @@
             <li><a href="#"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/trials*') }}"><i
                         class="ri-user-add-line"></i>Đăng Ký Tập Thử</a></li>
-            <li><a href="#"
+            <li><a href="{{ route('admin.contacts.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/feedback*') }}"><i
                         class="ri-chat-1-line"></i>Phản Hồi Khách Hàng</a></li>
-            <li><a href="#"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/ai-knowledge-base*') }}"><i
-                        class="ri-robot-line"></i>Cơ Sở Tri Thức AI</a></li>
+
 
             <li class="menu-title"><span><i class="ri-mail-line mr-1"></i>Marketing & CSKH</span></li>
 
@@ -186,9 +184,7 @@
 
             <li class="menu-title"><span><i class="ri-settings-3-line mr-1"></i>Quản Lý Hệ Thống</span></li>
 
-            <li><a href="#"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/staff*') }}"><i
-                        class="ri-user-settings-line"></i>Tài Khoản Nhân Viên</a></li>
+
             <li><a href="{{ route('admin.rfid.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/rfid*') }}"><i
                         class="ri-rfid-line"></i>Quản Lý Thẻ RFID</a></li>

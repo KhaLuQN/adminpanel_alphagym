@@ -29,7 +29,7 @@ class Testimonial extends Model
         'member_id',
         'image_url',
         'is_approved',
-        'display_on_website',
+
         'submitted_at',
     ];
 

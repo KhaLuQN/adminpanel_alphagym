@@ -2,20 +2,24 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
+use App\Services\RFIDService;
 use Illuminate\Http\Request;
 
 class RFIDController extends Controller
 {
+    protected $rfidService;
+
+    public function __construct(RFIDService $rfidService)
+    {
+        $this->rfidService = $rfidService;
+    }
+
     /**
      * Hiển thị danh sách thẻ RFID
      */
     public function index()
     {
-        $members = Member::whereNotNull('rfid_card_id')
-            ->orderBy('status', 'desc')
-            ->orderBy('join_date', 'desc')
-            ->get();
+        $members = $this->rfidService->getMembersWithRfid();
 
         return view('admin.pages.rfid.index', compact('members'));
     }
@@ -25,20 +29,14 @@ class RFIDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $member = Member::findOrFail($id);
-
-        if (empty($member->rfid_card_id)) {
+        try {
+            $this->rfidService->updateRfidStatus($id, $request->status);
             return redirect()->back()
-                ->with('error', 'Thành viên này không có thẻ RFID!');
+                ->with('success', 'Cập nhật trạng thái thẻ thành công!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', $e->getMessage());
         }
-
-        $member->update([
-            'status'     => $request->status,
-            'updated_at' => now(),
-        ]);
-
-        return redirect()->back()
-            ->with('success', 'Cập nhật trạng thái thẻ thành công!');
     }
 
     /**
@@ -46,20 +44,13 @@ class RFIDController extends Controller
      */
     public function destroy($id)
     {
-        $member = Member::findOrFail($id);
-
-        if (empty($member->rfid_card_id)) {
+        try {
+            $this->rfidService->detachRfid($id);
             return redirect()->back()
-                ->with('error', 'Thành viên này không có thẻ RFID!');
+                ->with('success', 'Đã gỡ thẻ RFID khỏi thành viên!');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', $e->getMessage());
         }
-
-        $member->update([
-            'rfid_card_id' => null,
-            'updated_at'   => now(),
-        ]);
-
-        return redirect()->back()
-            ->with('success', 'Đã gỡ thẻ RFID khỏi thành viên!');
     }
-
 }

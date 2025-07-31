@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\ArticleCategoryController;
 use App\Http\Controllers\admin\ArticleController;
 use App\Http\Controllers\admin\CheckinController;
 use App\Http\Controllers\admin\CommunicationLogController;
+use App\Http\Controllers\admin\ContactController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\EmailTemplateController;
 use App\Http\Controllers\admin\EquipmentController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
 use App\Http\Controllers\admin\TrainerController;
+use App\Http\Controllers\admin\VnpayController;
 use App\Http\Controllers\auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,17 +29,18 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 // Member routes
 Route::prefix('admin/member')->group(function () {
     Route::get('/index', [MemberController::class, 'index'])->name('admin.members.index');
-    Route::post('/update', [MemberController::class, 'update'])->name('admin.members.update');
-    Route::post('/store', [MemberController::class, 'store'])->name('admin.members.store');
     Route::get('/create', [MemberController::class, 'create'])->name('admin.members.create');
-    Route::get('/{id}', [MemberController::class, 'show'])->name('admin.members.show');
-    Route::delete('/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
+    Route::post('/store', [MemberController::class, 'store'])->name('admin.members.store');
+    Route::get('/{member}/edit', [MemberController::class, 'edit'])->name('admin.members.edit');
 
+    Route::put('/{member}/update', [MemberController::class, 'update'])->name('admin.members.update');
+    Route::get('/{member}/show', [MemberController::class, 'show'])->name('admin.members.show');
+    Route::delete('/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
 });
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('membership-plans', MembershipPlanController::class);
 
-    Route::resource('plan-features', PlanFeatureController::class)->except(['show']);
 });
 // Member Subscription routes
 Route::prefix('admin/subscriptions')->group(function () {
@@ -110,4 +113,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+});
+
+Route::get('/vnpay/return', [VnpayController::class, 'handleReturn'])->name('vnpay.return');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/contacts', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+    Route::post('/contacts/{contact}/resolve', [ContactController::class, 'resolve'])->name('contacts.resolve');
+    Route::post('/contacts/{contact}/unresolve', [ContactController::class, 'unresolve'])->name('contacts.unresolve');
+    Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+
 });

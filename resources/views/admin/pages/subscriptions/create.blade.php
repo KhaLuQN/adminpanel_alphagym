@@ -1,4 +1,11 @@
 @extends('admin.layouts.master')
+@section('page_title', 'Bảng Điều Khiển')
+
+@section('breadcrumbs')
+    <li><a href="{{ route('home') }}" class="link link-hover">Admin</a></li>
+    <li><a href="#" class="link link-hover">Đăng ký gói tập </a></li>
+
+@endsection
 @section('content')
     <div class="p-6">
         <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
@@ -27,16 +34,113 @@
                             <form id="registerPackageForm" action="{{ route('admin.subscriptions.store') }}" method="POST">
                                 @csrf
 
+                                <!-- Quick Search Section -->
+                                <div class="card bg-base-100 border-2 border-dashed border-primary/30 mb-6">
+                                    <div class="card-body">
+                                        <h3 class="card-title text-primary mb-4">
+                                            <i class="ri-search-line mr-2"></i>Tìm kiếm nhanh hội viên
+                                        </h3>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <!-- RFID Search -->
+                                            <div class="form-control">
+                                                <label class="label">
+                                                    <span class="label-text font-semibold">
+                                                        <i class="ri-nfc-line mr-2"></i>Quét thẻ RFID
+                                                    </span>
+                                                </label>
+                                                <div class="join">
+                                                    <input type="text" id="rfidSearch"
+                                                        placeholder="Quét hoặc nhập mã RFID..."
+                                                        class="input input-bordered join-item flex-1" autocomplete="off">
+                                                    <button type="button" id="clearRfid" class="btn btn-outline join-item">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </div>
+                                                <label class="label">
+                                                    <span class="label-text-alt text-info">
+                                                        <i class="ri-information-line mr-1"></i>
+                                                        Đặt con trỏ vào ô và quét thẻ RFID
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <!-- Phone Search -->
+                                            <div class="form-control">
+                                                <label class="label">
+                                                    <span class="label-text font-semibold">
+                                                        <i class="ri-phone-line mr-2"></i>Tìm theo SĐT
+                                                    </span>
+                                                </label>
+                                                <div class="join">
+                                                    <input type="text" id="phoneSearch"
+                                                        placeholder="Nhập số điện thoại..."
+                                                        class="input input-bordered join-item flex-1">
+                                                    <button type="button" id="clearPhone"
+                                                        class="btn btn-outline join-item">
+                                                        <i class="ri-close-line"></i>
+                                                    </button>
+                                                </div>
+                                                <label class="label">
+                                                    <span class="label-text-alt text-info">
+                                                        <i class="ri-information-line mr-1"></i>
+                                                        Nhập ít nhất 3 chữ số để tìm kiếm
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Search Results -->
+                                        <div id="searchResults" class="mt-4 hidden">
+                                            <div class="divider">
+                                                <span class="text-primary font-semibold">Kết quả tìm kiếm</span>
+                                            </div>
+                                            <div id="searchResultsList" class="space-y-2 max-h-60 overflow-y-auto">
+                                                <!-- Results will be populated here -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Member Selection -->
                                 <div class="form-control mb-6">
                                     <label class="label">
                                         <span class="label-text text-base font-semibold">
-                                            <i class="ri-user-line mr-2"></i>Hội viên
+                                            <i class="ri-user-line mr-2"></i>Hội viên được chọn
                                             <span class="text-error">*</span>
                                         </span>
                                     </label>
-                                    <select name="member_id" class="select select-bordered select-lg w-full select2-member"
-                                        required>
+
+                                    <!-- Selected Member Display -->
+                                    <div id="selectedMemberCard"
+                                        class="card bg-success/10 border-2 border-success/30 hidden mb-4">
+                                        <div class="card-body py-4">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-3">
+                                                    <div class="avatar placeholder">
+                                                        <div class="bg-success text-success-content rounded-full w-10">
+                                                            <i class="ri-user-line"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div class="font-bold text-success" id="selectedMemberName"></div>
+                                                        <div class="text-sm opacity-75" id="selectedMemberInfo"></div>
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="clearSelection"
+                                                    class="btn btn-sm btn-outline btn-error">
+                                                    <i class="ri-close-line mr-1"></i>Bỏ chọn
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hidden input for selected member -->
+                                    <input type="hidden" name="member_id" id="selectedMemberId" required>
+
+                                    <!-- Traditional dropdown (fallback) -->
+                                    <select name="member_id_fallback"
+                                        class="select select-bordered select-lg w-full select2-member hidden">
                                         <option value="">-- Chọn hội viên --</option>
                                         @foreach ($members as $member)
                                             <option value="{{ $member->member_id }}"
@@ -49,12 +153,12 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    <label class="label">
-                                        <span class="label-text-alt text-info">
-                                            <i class="ri-information-line mr-1"></i>
-                                            Có thể tìm kiếm theo tên, số điện thoại hoặc mã thẻ RFID
-                                        </span>
-                                    </label>
+
+                                    <div id="noMemberSelected" class="alert alert-warning mt-2">
+                                        <i class="ri-alert-line mr-2"></i>
+                                        <span>Vui lòng tìm kiếm và chọn hội viên bằng thẻ RFID hoặc số điện thoại ở phía
+                                            trên</span>
+                                    </div>
                                 </div>
 
                                 <!-- Package Selection -->
@@ -68,9 +172,9 @@
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         @foreach ($packages as $package)
                                             <div class="package-option">
-                                                <input type="radio" id="package-{{ $package->plan_id }}" name="package_id"
-                                                    value="{{ $package->plan_id }}" class="package-radio hidden"
-                                                    data-price="{{ $package->price }}"
+                                                <input type="radio" id="package-{{ $package->plan_id }}"
+                                                    name="package_id" value="{{ $package->plan_id }}"
+                                                    class="package-radio hidden" data-price="{{ $package->price }}"
                                                     data-discount="{{ $package->discount_percent }}"
                                                     data-duration="{{ $package->duration_days }}">
                                                 <label for="package-{{ $package->plan_id }}"
@@ -129,7 +233,8 @@
 
                                                                     <div
                                                                         class="flex justify-between items-center text-error">
-                                                                        <span class="flex items-center gap-2 font-semibold">
+                                                                        <span
+                                                                            class="flex items-center gap-2 font-semibold">
                                                                             <i class="ri-price-tag-3-line"></i>
                                                                             Thành tiền:
                                                                         </span>
@@ -142,7 +247,8 @@
 
                                                                     <div
                                                                         class="flex justify-between items-center text-primary">
-                                                                        <span class="flex items-center gap-2 font-semibold">
+                                                                        <span
+                                                                            class="flex items-center gap-2 font-semibold">
                                                                             <i class="ri-price-tag-3-line"></i>
                                                                             Thành tiền:
                                                                         </span>
@@ -168,10 +274,10 @@
                                         </span>
                                     </label>
                                     <div class="join w-full">
-                                        <input class="join-item btn btn-outline flex-1" type="radio" name="payment_method"
-                                            value="cash" checked aria-label="Tiền mặt" />
-                                        <input class="join-item btn btn-outline flex-1" type="radio" name="payment_method"
-                                            value="vnpay" aria-label="Chuyển khoản VNPAY" />
+                                        <input class="join-item btn btn-outline flex-1" type="radio"
+                                            name="payment_method" value="cash" checked aria-label="Tiền mặt" />
+                                        <input class="join-item btn btn-outline flex-1" type="radio"
+                                            name="payment_method" value="vnpay" aria-label="Chuyển khoản VNPAY" />
                                     </div>
                                 </div>
 
@@ -232,11 +338,8 @@
 
         .package-radio:checked+.package-label .package-card {
             border-color: #dc2626 !important;
-            /* đỏ */
             background-color: rgba(220, 38, 38, 0.05) !important;
-            /* đỏ nhạt */
         }
-
 
         .package-radio:checked+.package-label .selected-indicator {
             opacity: 1;
@@ -261,24 +364,229 @@
             border: 1px solid hsl(var(--bc) / 0.2) !important;
             border-radius: 8px !important;
         }
+
+        .search-result-item {
+            transition: all 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        #rfidSearch {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
     </style>
 @endsection
+
 @push('customjs')
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            const members = @json($membersJson);
+
+            let selectedMember = null;
+
+            // Initialize
             updateSummary();
+            updateSubmitButton();
+
+            // RFID Search functionality
+            $('#rfidSearch').on('input', function() {
+                const rfidValue = $(this).val().trim();
+                if (rfidValue.length >= 3) {
+                    searchByRfid(rfidValue);
+                } else {
+                    hideSearchResults();
+                }
+            });
+
+            // Phone Search functionality
+            $('#phoneSearch').on('input', function() {
+                const phoneValue = $(this).val().trim();
+                if (phoneValue.length >= 3) {
+                    searchByPhone(phoneValue);
+                } else {
+                    hideSearchResults();
+                }
+            });
+
+            // Clear buttons
+            $('#clearRfid').click(function() {
+                $('#rfidSearch').val('').focus();
+                hideSearchResults();
+            });
+
+            $('#clearPhone').click(function() {
+                $('#phoneSearch').val('').focus();
+                hideSearchResults();
+            });
+
+            // Clear selection
+            $('#clearSelection').click(function() {
+                clearSelectedMember();
+            });
+
+            // Search by RFID
+            function searchByRfid(rfidValue) {
+                const results = members.filter(member =>
+                    member.rfid && member.rfid.toLowerCase().includes(rfidValue.toLowerCase())
+                );
+                displaySearchResults(results, 'RFID');
+            }
+
+            // Search by Phone
+            function searchByPhone(phoneValue) {
+                const results = members.filter(member =>
+                    member.phone && member.phone.includes(phoneValue)
+                );
+                displaySearchResults(results, 'Số điện thoại');
+            }
+
+            // Display search results
+            function displaySearchResults(results, searchType) {
+                const resultsContainer = $('#searchResultsList');
+                resultsContainer.empty();
+
+                if (results.length === 0) {
+                    resultsContainer.html(`
+                        <div class="alert alert-warning">
+                            <i class="ri-search-line mr-2"></i>
+                            <span>Không tìm thấy hội viên nào với ${searchType} này</span>
+                        </div>
+                    `);
+                } else {
+                    results.forEach(member => {
+                        const memberCard = createMemberCard(member);
+                        resultsContainer.append(memberCard);
+                    });
+                }
+
+                $('#searchResults').removeClass('hidden');
+            }
+
+            // Create member card for search results
+            function createMemberCard(member) {
+                return $(`
+                    <div class="card bg-base-100 border search-result-item cursor-pointer hover:bg-base-200"
+                         data-member-id="${member.id}">
+                        <div class="card-body py-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar placeholder">
+                                        <div class="bg-primary text-primary-content rounded-full w-10">
+                                            <i class="ri-user-line"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">${member.name}</div>
+                                        <div class="text-sm opacity-75">
+                                            <i class="ri-phone-line mr-1"></i>${member.phone}
+                                            ${member.rfid ? `<span class="ml-2"><i class="ri-nfc-line mr-1"></i>${member.rfid}</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-primary select-member-btn">
+                                    <i class="ri-check-line mr-1"></i>Chọn
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).on('click', function() {
+                    selectMember(member);
+                });
+            }
+
+            // Select member
+            function selectMember(member) {
+                selectedMember = member;
+
+                // Update hidden input
+                $('#selectedMemberId').val(member.id);
+
+                // Update selected member display
+                $('#selectedMemberName').text(member.name);
+                $('#selectedMemberInfo').html(`
+                    <i class="ri-phone-line mr-1"></i>${member.phone}
+                    ${member.rfid ? `<span class="ml-2"><i class="ri-nfc-line mr-1"></i>${member.rfid}</span>` : ''}
+                `);
+
+                // Show selected member card
+                $('#selectedMemberCard').removeClass('hidden');
+                $('#noMemberSelected').addClass('hidden');
+
+                // Clear search
+                $('#rfidSearch').val('');
+                $('#phoneSearch').val('');
+                hideSearchResults();
+
+                // Update submit button
+                updateSubmitButton();
+
+                // Show success toast
+                showToast('success', `Đã chọn hội viên: ${member.name}`);
+            }
+
+            // Clear selected member
+            function clearSelectedMember() {
+                selectedMember = null;
+                $('#selectedMemberId').val('');
+                $('#selectedMemberCard').addClass('hidden');
+                $('#noMemberSelected').removeClass('hidden');
+                updateSubmitButton();
+                showToast('info', 'Đã bỏ chọn hội viên');
+            }
+
+            // Hide search results
+            function hideSearchResults() {
+                $('#searchResults').addClass('hidden');
+            }
+
+            // Update submit button state
+            function updateSubmitButton() {
+                const submitBtn = $('#submitBtn');
+                if (selectedMember) {
+                    submitBtn.prop('disabled', false).removeClass('btn-disabled');
+                } else {
+                    submitBtn.prop('disabled', true).addClass('btn-disabled');
+                }
+            }
+
+            // Show toast notification
+            function showToast(type, message) {
+                const toastClass = type === 'success' ? 'alert-success' :
+                    type === 'error' ? 'alert-error' : 'alert-info';
+
+                const toast = $(`
+                    <div class="toast toast-top toast-end z-50">
+                        <div class="alert ${toastClass}">
+                            <span>${message}</span>
+                        </div>
+                    </div>
+                `);
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 3000);
+            }
+
+            // Package selection and summary update
+            $('.package-radio').on('change', function() {
+                updateSummary();
+            });
 
             $('input[name="start_date"]').on('change', function() {
                 updateSummary();
             });
 
-
-            $('.package-radio').on('change', function() {
-                updateSummary();
-            });
-
+            // Select first package by default
             const firstPackage = $('.package-radio').first();
             if (firstPackage.length && !$('.package-radio:checked').length) {
                 firstPackage.prop('checked', true).trigger('change');
@@ -307,17 +615,36 @@
                 }
             }
 
+            // Form validation before submit
+            $('#registerPackageForm').on('submit', function(e) {
+                if (!selectedMember) {
+                    e.preventDefault();
+                    showToast('error', 'Vui lòng chọn hội viên trước khi đăng ký gói tập');
+                    return false;
+                }
+            });
 
+            // Auto-focus on RFID input for quick scanning
+            $('#rfidSearch').focus();
 
+            // Handle RFID scanner input (usually ends with Enter)
+            $('#rfidSearch').on('keypress', function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    const rfidValue = $(this).val().trim();
+                    if (rfidValue) {
+                        // Try to find exact match first
+                        const exactMatch = members.find(member =>
+                            member.rfid && member.rfid.toLowerCase() === rfidValue.toLowerCase()
+                        );
 
-
-
-
-            $('input[name="start_date"]').change(function() {
-                const duration = $('.package-radio:checked').data('duration');
-                const expiryDate = new Date($(this).val());
-                expiryDate.setDate(expiryDate.getDate() + parseInt(duration));
-                $('#expiryDate').text(expiryDate.toLocaleDateString('vi-VN'));
+                        if (exactMatch) {
+                            selectMember(exactMatch);
+                        } else {
+                            searchByRfid(rfidValue);
+                        }
+                    }
+                }
             });
         });
     </script>

@@ -20,25 +20,32 @@
             <div class="card-body">
                 <h2 class="card-title">Bộ lọc thời gian</h2>
                 <form method="GET" action="{{ route('admin.reports.index') }}"
-                    class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Ngày bắt đầu</span>
-                        </label>
-                        <input type="date" name="start_date" value="{{ $startDate }}"
+                        <label class="label"><span class="label-text">Ngày bắt đầu</span></label>
+                        <input type="date" name="start_date" id="start_date" value="{{ $startDate }}"
                             class="input input-bordered w-full" />
                     </div>
                     <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Ngày kết thúc</span>
-                        </label>
-                        <input type="date" name="end_date" value="{{ $endDate }}"
+                        <label class="label"><span class="label-text">Ngày kết thúc</span></label>
+                        <input type="date" name="end_date" id="end_date" value="{{ $endDate }}"
                             class="input input-bordered w-full" />
                     </div>
                     <div class="form-control">
+                        <label class="label"><span class="label-text">Chọn nhanh</span></label>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="setThisWeek()" class="btn btn-outline btn-sm">Tuần này</button>
+                            <button type="button" onclick="setThisMonth()" class="btn btn-outline btn-sm">Tháng
+                                này</button>
+                            <button type="button" onclick="setThisYear()" class="btn btn-outline btn-sm">Năm nay</button>
+                        </div>
+                    </div>
+                    <div class="form-control">
+                        <label class="label invisible"><span class="label-text">Lọc</span></label>
                         <button type="submit" class="btn btn-primary">Lọc</button>
                     </div>
                 </form>
+
             </div>
         </div>
 
@@ -60,7 +67,49 @@
         </div>
     </div>
 @endsection
+<script>
+    function formatDate(date) {
+        return date.toISOString().split('T')[0];
+    }
 
+    function setThisWeek() {
+        const today = new Date();
+        const dayOfWeek = today.getDay(); // 0 (CN) đến 6 (T7)
+
+        // Lùi về Thứ Hai
+        const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        const monday = new Date(today);
+        monday.setDate(today.getDate() + diffToMonday);
+
+        // Tính Chủ Nhật
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+
+        document.getElementById('start_date').value = formatDate(monday);
+        document.getElementById('end_date').value = formatDate(sunday);
+    }
+
+
+    function setThisMonth() {
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+        const lastDay = new Date(now.getFullYear(), now.getMonth() + 1,
+            0); // Ngày 0 của tháng sau = ngày cuối tháng này
+
+        document.getElementById('start_date').value = formatDate(firstDay);
+        document.getElementById('end_date').value = formatDate(lastDay);
+    }
+
+
+    function setThisYear() {
+        const now = new Date();
+        const firstDay = new Date(now.getFullYear(), 0, 1);
+        const lastDay = new Date(now.getFullYear(), 11, 31);
+
+        document.getElementById('start_date').value = formatDate(firstDay);
+        document.getElementById('end_date').value = formatDate(lastDay);
+    }
+</script>
 @push('customjs')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
