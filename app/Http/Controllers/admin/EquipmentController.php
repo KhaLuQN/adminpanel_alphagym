@@ -18,7 +18,7 @@ class EquipmentController extends Controller
 
     public function index()
     {
-        $equipments = Equipment::orderBy('status')->orderBy('purchase_date', 'desc')->get();
+        $equipments = $this->service->getEquipmentsForIndex();
         return view('admin.pages.equipment.index', compact('equipments'));
     }
 

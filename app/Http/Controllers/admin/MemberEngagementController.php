@@ -2,54 +2,24 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\CustomCampaignMail;
-use App\Models\CommunicationLog;
-use App\Models\EmailTemplate;
-use App\Models\Member;
-use Carbon\Carbon;
+use App\Services\MemberEngagementService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 
 class MemberEngagementController extends Controller
 {
+    protected $memberEngagementService;
+
+    public function __construct(MemberEngagementService $memberEngagementService)
+    {
+        $this->memberEngagementService = $memberEngagementService;
+    }
 
     public function index(Request $request)
     {
+        $data = $this->memberEngagementService->getMembersForEngagementIndex($request->all());
 
-        $query = Member::query();
-
-        if ($request->filled('months')) {
-            $months = (int) $request->months;
-            if ($months > 0) {
-
-                $targetDate = Carbon::now()->subMonths($months);
-                $query->whereMonth('join_date', $targetDate->month)
-                    ->whereYear('join_date', $targetDate->year);
-            }
-        }
-
-        if ($request->filled('campaign_name')) {
-            $campaignName = $request->campaign_name;
-
-            $sentMemberIds = CommunicationLog::where('campaign_name', $campaignName)->pluck('member_id');
-
-            $query->whereNotIn('member_id', $sentMemberIds);
-        }
-
-        $members   = $query->with('subscriptions')->paginate(20)->withQueryString();
-        $templates = EmailTemplate::all();
-
-        return view('admin.pages.engagement.index', array_merge(
-
-            [
-                'members'   => $members,
-                'templates' => $templates,
-                'filters'   => $request->all(),
-            ]
-        ));
-
+        return view('admin.pages.engagement.index', $data);
     }
 
     /**
@@ -66,36 +36,13 @@ class MemberEngagementController extends Controller
 
         ]);
 
-        $members   = Member::whereIn('member_id', $request->member_ids)->get();
-        $sentCount = 0;
-
-        foreach ($members as $member) {
-            try {
-
-                $personalizedBody = str_replace('[TEN_HOI_VIEN]', $member->full_name, $request->body);
-                $personalizedBody = str_replace(
-                    '[NGAY_THAM_GIA]',
-                    \Carbon\Carbon::parse($member->join_date)->format('d/m/Y'),
-                    $personalizedBody
-                );
-
-                Mail::to($member->email)->send(new CustomCampaignMail($request->subject, $personalizedBody));
-
-                CommunicationLog::create([
-                    'member_id'     => $member->member_id,
-                    'user_id'       => Auth::id(),
-                    'campaign_name' => $request->campaign_name,
-                    'subject'       => $request->subject,
-                    'body'          => $personalizedBody,
-                    'status'        => 'sent',
-                    'sent_at'       => now(),
-                ]);
-
-                $sentCount++;
-            } catch (\Exception $e) {
-                Log::error("Gửi email chiến dịch '{$request->campaign_name}' thất bại đến {$member->email}: " . $e->getMessage());
-            }
-        }
+        $sentCount = $this->memberEngagementService->sendCampaignEmail(
+            $request->member_ids,
+            $request->campaign_name,
+            $request->subject,
+            $request->body,
+            Auth::id()
+        );
 
         return redirect()->back()->with('success', "Đã gửi email thành công cho {$sentCount}/" . count($request->member_ids) . " hội viên.");
     }

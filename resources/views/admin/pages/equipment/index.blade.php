@@ -39,8 +39,7 @@
                                         @if ($equipment->img)
                                             <div class="avatar">
                                                 <div class="w-20 rounded">
-                                                    <img src="{{ asset('storage/' . $equipment->img) }}"
-                                                        alt="{{ $equipment->name }}">
+                                                    <img src="{{ asset($equipment->img) }}" alt="{{ $equipment->name }}">
                                                 </div>
                                             </div>
                                         @else
@@ -71,7 +70,7 @@
                                                 data-status="{{ $equipment->status }}"
                                                 data-location="{{ $equipment->location }}"
                                                 data-notes="{{ $equipment->notes }}"
-                                                data-img="{{ asset('storage/' . $equipment->img) }}">
+                                                data-img="{{ asset($equipment->img) }}">
                                                 <i class="ri-edit-line text-lg text-info"></i>
                                             </button>
 

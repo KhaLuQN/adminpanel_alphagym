@@ -3,16 +3,24 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\EmailTemplate;
+use App\Services\EmailTemplateService;
 use Illuminate\Http\Request;
 
 class EmailTemplateController extends Controller
 {
+    protected $emailTemplateService;
+
+    public function __construct(EmailTemplateService $emailTemplateService)
+    {
+        $this->emailTemplateService = $emailTemplateService;
+    }
+
     /**
      * Hiển thị danh sách tất cả các mẫu email.
      */
     public function index()
     {
-        $templates = EmailTemplate::latest()->paginate(10);
+        $templates = $this->emailTemplateService->getTemplatesForIndex();
         return view('admin.pages.emails.email-templates.index', compact('templates'));
     }
 
@@ -35,7 +43,7 @@ class EmailTemplateController extends Controller
             'body'    => 'required|string',
         ]);
 
-        EmailTemplate::create($validatedData);
+        $this->emailTemplateService->createEmailTemplate($validatedData);
 
         return redirect()->route('admin.email-templates.index')
             ->with('success', 'Đã tạo mẫu email thành công!');
@@ -60,7 +68,7 @@ class EmailTemplateController extends Controller
             'body'    => 'required|string',
         ]);
 
-        $emailTemplate->update($validatedData);
+        $this->emailTemplateService->updateEmailTemplate($emailTemplate, $validatedData);
 
         return redirect()->route('admin.email-templates.index')
             ->with('success', 'Đã cập nhật mẫu email thành công!');
@@ -71,7 +79,7 @@ class EmailTemplateController extends Controller
      */
     public function destroy(EmailTemplate $emailTemplate)
     {
-        $emailTemplate->delete();
+        $this->emailTemplateService->deleteEmailTemplate($emailTemplate);
 
         return redirect()->route('admin.email-templates.index')
             ->with('success', 'Đã xóa mẫu email thành công!');

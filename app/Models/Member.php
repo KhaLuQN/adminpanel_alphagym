@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Member extends Model
 {
@@ -44,5 +45,20 @@ class Member extends Model
     {
 
         return $this->hasOne(TrainerProfile::class, 'member_id', 'member_id');
+    }
+
+    /**
+     * Get the full URL of the member image.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getImgAttribute($value)
+    {
+        if ($value) {
+            return 'storage/' . $value;
+        }
+
+        return null;
     }
 }

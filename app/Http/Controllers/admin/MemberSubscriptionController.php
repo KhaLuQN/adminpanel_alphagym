@@ -2,42 +2,22 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Member;
-use App\Models\MembershipPlan;
-use App\Models\Payment;
 use App\Services\MemberSubscriptionService;
-use App\Services\Payments\VnpayService;
 use Illuminate\Http\Request;
 
 class MemberSubscriptionController extends Controller
 {
     protected $subscriptionService;
 
-    public function __construct(MemberSubscriptionService $subscriptionService,
-        VnpayService $vnpayService,
-    ) {
+    public function __construct(MemberSubscriptionService $subscriptionService)
+    {
         $this->subscriptionService = $subscriptionService;
-        $this->vnpayService        = $vnpayService;
     }
 
     public function create()
     {
-        $members = Member::all();
-
-// Tạo mảng JSON-ready ngay tại controller
-        $membersJson = $members->map(function ($member) {
-            return [
-                'id'    => $member->member_id,
-                'name'  => $member->full_name,
-                'phone' => $member->phone,
-                'rfid'  => $member->rfid_card_id,
-            ];
-        })->values()->all();
-
-        $packages = MembershipPlan::orderBy('price', 'asc')->paginate(10);
-
-        return view('admin.pages.subscriptions.create', compact('packages', 'members', 'membersJson'));
-
+        $data = $this->subscriptionService->getDataForCreate();
+        return view('admin.pages.subscriptions.create', $data);
     }
 
     public function store(Request $request)
@@ -49,25 +29,10 @@ class MemberSubscriptionController extends Controller
             'payment_method' => 'required|in:cash,vnpay,momo',
         ]);
 
-        [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($request);
+        [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($request->validated());
 
-        $payment = Payment::create([
-            'subscription_id' => $subscription->subscription_id,
-            'amount'          => $actualPrice,
-            'payment_method'  => $request->payment_method,
-            'status'          => 'pending',
-        ]);
+        $payment = $this->subscriptionService->handlePayment($subscription, $actualPrice, $request->payment_method);
 
-        if ($request->payment_method === 'cash') {
-            $payment->update(['payment_status' => 'paid', 'payment_date' => now()]);
-            return redirect()->back()->with('success', 'Đăng ký gói tập và thanh toán tiền mặt thành công!');
-        }
-
-        if ($request->payment_method === 'vnpay') {
-            $url = $this->vnpayService->generatePaymentUrl($payment->payment_id, $actualPrice);
-            return redirect($url);
-        }
-
-        return redirect()->back()->with('error', 'Phương thức thanh toán không hợp lệ.');
+        return $this->subscriptionService->processPayment($payment, $request->payment_method);
     }
 }

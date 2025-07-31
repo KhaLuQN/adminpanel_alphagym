@@ -29,13 +29,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 // Member routes
 Route::prefix('admin/member')->group(function () {
     Route::get('/index', [MemberController::class, 'index'])->name('admin.members.index');
-    Route::post('/update', [MemberController::class, 'update'])->name('admin.members.update');
-    Route::post('/store', [MemberController::class, 'store'])->name('admin.members.store');
     Route::get('/create', [MemberController::class, 'create'])->name('admin.members.create');
-    Route::get('/{id}', [MemberController::class, 'show'])->name('admin.members.show');
-    Route::delete('/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
+    Route::post('/store', [MemberController::class, 'store'])->name('admin.members.store');
+    Route::get('/{member}/edit', [MemberController::class, 'edit'])->name('admin.members.edit');
 
+    Route::put('/{member}/update', [MemberController::class, 'update'])->name('admin.members.update');
+    Route::get('/{member}/show', [MemberController::class, 'show'])->name('admin.members.show');
+    Route::delete('/{id}', [MemberController::class, 'destroy'])->name('admin.members.destroy');
 });
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('membership-plans', MembershipPlanController::class);
 

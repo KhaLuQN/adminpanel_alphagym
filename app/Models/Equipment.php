@@ -3,6 +3,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Equipment extends Model
 {
@@ -26,4 +27,19 @@ class Equipment extends Model
     protected $casts = [
         'purchase_date' => 'date:Y-m-d',
     ];
+
+    /**
+     * Get the full URL of the equipment image.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getImgAttribute($value)
+    {
+        if ($value) {
+            return 'storage/' . $value;
+        }
+
+        return null;
+    }
 }

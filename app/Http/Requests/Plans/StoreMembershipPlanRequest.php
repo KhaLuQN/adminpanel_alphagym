@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Requests;
+namespace App\Http\Requests\Plans;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateMembershipPlanRequest extends FormRequest
+class StoreMembershipPlanRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -62,4 +62,5 @@ class UpdateMembershipPlanRequest extends FormRequest
             'features.*.value' => 'giá trị quyền lợi',
         ];
     }
+
 }

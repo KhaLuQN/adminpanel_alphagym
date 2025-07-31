@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Article extends Model
 {
@@ -84,5 +85,21 @@ class Article extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(ArticleCategory::class, 'article_category_id');
+    }
+
+    /**
+     * Get the full URL of the featured image.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getFeaturedImageUrlAttribute($value)
+    {
+        if ($value) {
+            // Prepend 'storage/' to the path for the asset() helper
+            return 'storage/' . $value;
+        }
+
+        return null;
     }
 }

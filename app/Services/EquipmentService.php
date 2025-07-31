@@ -6,6 +6,10 @@ use Illuminate\Support\Facades\Storage;
 
 class EquipmentService
 {
+    public function getEquipmentsForIndex()
+    {
+        return Equipment::orderBy('status')->orderBy('purchase_date', 'desc')->get();
+    }
     public function create(array $data): Equipment
     {
         if (isset($data['img']) && $data['img']->isValid()) {

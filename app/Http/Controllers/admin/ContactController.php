@@ -2,40 +2,40 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contact;
+use App\Services\ContactService;
 
 class ContactController extends Controller
 {
+    protected $contactService;
+
+    public function __construct(ContactService $contactService)
+    {
+        $this->contactService = $contactService;
+    }
+
     public function index()
     {
         return view('admin.pages.contacts.index', [
-            'contacts' => Contact::latest()->paginate(15)->withQueryString(),
+            'contacts' => $this->contactService->getContactsForIndex(),
         ]);
     }
 
     public function resolve(Contact $contact)
     {
-        $contact->is_resolved = true;
-        $contact->save();
-
+        $this->contactService->resolveContact($contact);
         return redirect()->back()->with('success', 'Liên hệ đã được đánh dấu là đã xử lý.');
     }
 
     public function unresolve(Contact $contact)
     {
-        $contact->is_resolved = false;
-        $contact->save();
-
+        $this->contactService->unresolveContact($contact);
         return redirect()->back()->with('success', 'Liên hệ đã được bỏ đánh dấu xử lý.');
     }
 
     // Xóa liên hệ
     public function destroy(Contact $contact)
     {
-
-        $contact->delete();
-
+        $this->contactService->deleteContact($contact);
         return redirect()->back()->with('success', 'Liên hệ đã được xóa thành công.');
-
     }
 }
