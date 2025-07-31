@@ -13,7 +13,6 @@ class ContactController extends Controller
         ]);
     }
 
-    // Đánh dấu là đã xử lý
     public function resolve(Contact $contact)
     {
         $contact->is_resolved = true;
@@ -22,7 +21,6 @@ class ContactController extends Controller
         return redirect()->back()->with('success', 'Liên hệ đã được đánh dấu là đã xử lý.');
     }
 
-    // Bỏ đánh dấu xử lý
     public function unresolve(Contact $contact)
     {
         $contact->is_resolved = false;
@@ -34,9 +32,10 @@ class ContactController extends Controller
     // Xóa liên hệ
     public function destroy(Contact $contact)
     {
+
         $contact->delete();
 
-        return redirect()->back()->with('success', 'Liên hệ đã được xóa.');
+        return redirect()->back()->with('success', 'Liên hệ đã được xóa thành công.');
 
     }
 }

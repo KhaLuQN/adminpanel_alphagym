@@ -1,11 +1,13 @@
 <?php
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contact extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'contacts';
 
     protected $primaryKey = 'id';
@@ -19,11 +21,6 @@ class Contact extends Model
         'message',
         'type',
     ];
-
-    public function getSubmittedAtFormattedAttribute()
-    {
-        return Carbon::parse($this->submitted_at)->format('d/m/Y');
-    }
 
     protected $casts = [
         'type' => 'string',

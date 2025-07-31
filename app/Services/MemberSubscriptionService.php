@@ -15,6 +15,9 @@ class MemberSubscriptionService
         $actualPrice = $package->price * (1 - $package->discount_percent / 100);
 
         $currentSubscription = MemberSubscription::where('member_id', $request->member_id)
+            ->whereHas('payments', function ($query) {
+                $query->where('payment_status', 'paid');
+            })
             ->where('end_date', '>=', now())
             ->orderByDesc('end_date')
             ->first();

@@ -22,9 +22,22 @@ class MemberSubscriptionController extends Controller
 
     public function create()
     {
-        $members  = Member::all();
+        $members = Member::all();
+
+// Tạo mảng JSON-ready ngay tại controller
+        $membersJson = $members->map(function ($member) {
+            return [
+                'id'    => $member->member_id,
+                'name'  => $member->full_name,
+                'phone' => $member->phone,
+                'rfid'  => $member->rfid_card_id,
+            ];
+        })->values()->all();
+
         $packages = MembershipPlan::orderBy('price', 'asc')->paginate(10);
-        return view('admin.pages.subscriptions.create', compact('packages', 'members'));
+
+        return view('admin.pages.subscriptions.create', compact('packages', 'members', 'membersJson'));
+
     }
 
     public function store(Request $request)
@@ -46,7 +59,7 @@ class MemberSubscriptionController extends Controller
         ]);
 
         if ($request->payment_method === 'cash') {
-            $payment->update(['status' => 'paid', 'paid_at' => now()]);
+            $payment->update(['payment_status' => 'paid', 'payment_date' => now()]);
             return redirect()->back()->with('success', 'Đăng ký gói tập và thanh toán tiền mặt thành công!');
         }
 

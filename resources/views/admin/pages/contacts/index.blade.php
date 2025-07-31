@@ -203,11 +203,12 @@
                                             <div class="divider my-1"></div>
                                             <li>
                                                 <form action="{{ route('admin.contacts.destroy', $contact->id) }}"
-                                                    method="POST" class="w-full">
+                                                    id="delete-form-contacts-{{ $contact->id }}" method="POST"
+                                                    class="w-full">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit"
-                                                        class="flex items-center gap-2 w-full text-left text-error">
+                                                    <button data-form-id="delete-form-contacts-{{ $contact->id }}"
+                                                        type="button" class="delete-btn">
                                                         <i class="ri-delete-bin-line"></i>
                                                         Xóa
                                                     </button>

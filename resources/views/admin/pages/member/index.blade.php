@@ -45,7 +45,10 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>{{ $member->full_name }}</td>
+                                    <td> <a href="{{ route('admin.members.show', $member->member_id) }}"
+                                            class="text-blue-500 font-semibold hover:underline">
+                                            {{ $member->full_name }}
+                                        </a></td>
                                     <td>{{ $member->phone }}</td>
 
 

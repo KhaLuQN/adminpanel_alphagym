@@ -24,7 +24,9 @@ class DashboardController extends Controller
         // ===== 1. TÍNH TOÁN CÁC THẺ KPI =====
 
         // Doanh thu hôm nay
-        $todayRevenue = Payment::whereDate('payment_date', $today)->sum('amount');
+        $todayRevenue = Payment::whereDate('payment_date', $today)
+            ->where('payment_status', 'paid')
+            ->sum('amount');
 
         // Số hội viên mới trong ngày
         $newMembersCount = Member::whereDate('join_date', $today)->count();
@@ -49,6 +51,7 @@ class DashboardController extends Controller
             DB::raw('DATE(payment_date) as date'),
             DB::raw('SUM(amount) as total')
         )
+            ->where('payment_status', 'paid')
             ->where('payment_date', '>=', $sevenDaysAgo)
             ->groupBy('date')
             ->orderBy('date', 'asc')
@@ -97,10 +100,12 @@ class DashboardController extends Controller
             ->get();
 
         $expiringMembers = MemberSubscription::with(['member', 'plan'])
-            ->where('end_date', '>=', $today)
-            ->where('end_date', '<=', $today->copy()->addDays(3))
+            ->whereBetween('end_date', [$today, $today->copy()->addDays(3)])
+            ->whereHas('payments', function ($query) {
+                $query->where('payment_status', 'paid');
+            })
             ->orderBy('end_date', 'asc')
-            ->limit(10) // Giới hạn 10 người
+            ->limit(10)
             ->get();
 
         return view('admin.pages.dashboard.index', compact(

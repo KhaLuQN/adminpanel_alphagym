@@ -2,7 +2,7 @@
 <div class="dropdown dropdown-end">
     <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
         <div class="indicator">
-            <i class="ri-notification-2-line text-lg"></i>
+            <i class="ri-mail-line text-lg"></i>
             <span class="badge badge-sm badge-error indicator-item">
                 {{ $contactNotifications->count() }}
             </span>
@@ -11,7 +11,7 @@
     </div>
     <div tabindex="0" class="dropdown-content z-[1] card card-compact w-80 p-2 shadow-xl bg-base-100">
         <div class="card-body">
-            <h3 class="card-title">Thông báo</h3>
+            <h3 class="card-title">Tin nhắn</h3>
             <div class="space-y-3">
                 <div class="space-y-3">
                     @forelse ($contactNotifications as $contact)
