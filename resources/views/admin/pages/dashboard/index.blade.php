@@ -105,7 +105,7 @@
                         Thành viên đang có mặt
                     </h2>
                     <div class="overflow-x-auto h-auto">
-                        <table class="table table-sm datatable">
+                        <table class="table table-zebra datatable w-full">
                             <thead>
                                 <tr>
                                     <th>Hội viên</th>
@@ -152,7 +152,7 @@
                     <h2 class="card-title text-warning flex items-center gap-2">Thành viên sắp hết hạn (< 3 ngày) </h2>
                             <i class="ri-alarm-warning-line"></i>
                             <div class="overflow-x-auto h-auto">
-                                <table class="table table-sm datatable">
+                                <table class="table table-zebra datatable w-full">
                                     <thead>
                                         <tr>
                                             <th>Hội viên</th>
