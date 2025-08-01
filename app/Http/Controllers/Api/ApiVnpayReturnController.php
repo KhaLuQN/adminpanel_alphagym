@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
@@ -57,7 +56,7 @@ class ApiVnpayReturnController extends Controller
         if ($responseCode === '00') {
             // Giao dịch THÀNH CÔNG
             $payment->payment_status = 'paid';
-            $payment->payment_date = Carbon::createFromFormat('YmdHis', $request->input('vnp_PayDate'));
+            $payment->payment_date   = Carbon::createFromFormat('YmdHis', $request->input('vnp_PayDate'));
             $payment->save();
             Log::info('VNPAY API Return: Transaction successful', ['payment_id' => $paymentId, 'status' => 'success']);
             return redirect(config('app.frontend_url') . '/payment-status?status=success&message=' . urlencode('Thanh toán thành công! Bạn có thể đến phòng gym để bắt đầu tập luyện.') . '&payment_id=' . $paymentId);

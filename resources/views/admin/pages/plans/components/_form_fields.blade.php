@@ -172,10 +172,10 @@
                     @foreach ($features as $feature)
                         @php
                             $currentFeature = isset($planFeatures) ? $planFeatures->get($feature->feature_id) : null;
-                            $isChecked = old("features.{$feature->feature_id}.id", $currentFeature) ? 'checked' : '';
+                            $isChecked = (old("features.{$feature->feature_id}.id") || ($currentFeature && $planFeatures->has($feature->feature_id))) ? 'checked' : '';
                             $currentValue = old(
                                 "features.{$feature->feature_id}.value",
-                                $currentFeature->pivot->feature_value ?? '',
+                                $currentFeature ? $currentFeature->pivot->feature_value : '',
                             );
                         @endphp
                         <div class="p-3 border border-base-300 rounded-lg hover:bg-base-200/50 transition-colors">

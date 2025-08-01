@@ -39,6 +39,7 @@ class MembershipPlanController extends Controller
     {
         $data         = $this->planService->getDataForCreateEdit();
         $planFeatures = $membershipPlan->features->keyBy('feature_id');
+        
         return view('admin.pages.plans.edit', array_merge(compact('membershipPlan', 'planFeatures'), $data));
     }
 

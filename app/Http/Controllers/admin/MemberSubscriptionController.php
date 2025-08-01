@@ -22,14 +22,15 @@ class MemberSubscriptionController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+
+        $validatedData = $request->validate([
             'member_id'      => 'required|exists:members,member_id',
             'package_id'     => 'required|exists:membership_plans,plan_id',
             'start_date'     => 'required|date|after_or_equal:today',
             'payment_method' => 'required|in:cash,vnpay,momo',
         ]);
 
-        [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($request->validated());
+        [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($validatedData);
 
         $payment = $this->subscriptionService->handlePayment($subscription, $actualPrice, $request->payment_method);
 
