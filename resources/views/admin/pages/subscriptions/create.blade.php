@@ -169,6 +169,12 @@
                                             <span class="text-error">*</span>
                                         </span>
                                     </label>
+                                    @error('package_id')
+                                        <div class="alert alert-error mt-2 mb-4">
+                                            <i class="ri-error-warning-line mr-2"></i>
+                                            <span>{{ $message }}</span>
+                                        </div>
+                                    @enderror
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         @foreach ($packages as $package)
                                             <div class="package-option">

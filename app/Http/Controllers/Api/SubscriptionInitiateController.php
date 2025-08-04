@@ -60,6 +60,19 @@ class SubscriptionInitiateController extends Controller
 
         $plan = MembershipPlan::find($request->membership_plan_id);
 
+        // Check if the plan is a trial and if the member already has a trial subscription
+        if ($plan && $plan->is_trial) {
+            $existingTrial = MemberSubscription::where('member_id', $member->member_id)
+                ->whereHas('plan', function ($query) {
+                    $query->where('is_trial', 1);
+                })
+                ->exists();
+
+            if ($existingTrial) {
+                return response()->json(['message' => 'Hội viên đã đăng ký gói tập thử.'], 400);
+            }
+        }
+
         $startDate = Carbon::now();
         $endDate   = $startDate->copy()->addDays($plan->duration_days);
 

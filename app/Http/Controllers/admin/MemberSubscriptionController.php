@@ -22,7 +22,6 @@ class MemberSubscriptionController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'member_id'      => 'required|exists:members,member_id',
             'package_id'     => 'required|exists:membership_plans,plan_id',
@@ -30,10 +29,12 @@ class MemberSubscriptionController extends Controller
             'payment_method' => 'required|in:cash,vnpay,momo',
         ]);
 
-        [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($validatedData);
-
-        $payment = $this->subscriptionService->handlePayment($subscription, $actualPrice, $request->payment_method);
-
-        return $this->subscriptionService->processPayment($payment, $request->payment_method);
+        try {
+            [$subscription, $actualPrice] = $this->subscriptionService->handleSubscription($validatedData);
+            $payment = $this->subscriptionService->handlePayment($subscription, $actualPrice, $request->payment_method);
+            return $this->subscriptionService->processPayment($payment, $request->payment_method);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['package_id' => $e->getMessage()])->withInput();
+        }
     }
 }

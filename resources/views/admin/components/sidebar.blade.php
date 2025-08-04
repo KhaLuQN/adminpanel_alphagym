@@ -150,9 +150,7 @@
             </li>
 
             {{-- Mục chưa có route --}}
-            <li><a href="#"
-                    class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/trials*') }}"><i
-                        class="ri-user-add-line"></i>Đăng Ký Tập Thử</a></li>
+
             <li><a href="{{ route('admin.contacts.index') }}"
                     class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-base-300 {{ is_active('admin/feedback*') }}"><i
                         class="ri-chat-1-line"></i>Phản Hồi Khách Hàng</a></li>
