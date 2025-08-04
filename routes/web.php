@@ -15,6 +15,8 @@ use App\Http\Controllers\admin\MemberSubscriptionController;
 use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
+use App\Http\Controllers\admin\TestimonialController
+;
 use App\Http\Controllers\admin\TrainerController;
 use App\Http\Controllers\admin\VnpayController;
 use App\Http\Controllers\auth\LoginController;
@@ -125,4 +127,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/contacts/{contact}/unresolve', [ContactController::class, 'unresolve'])->name('contacts.unresolve');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
+    Route::patch('testimonials/{testimonial}/approve', [TestimonialController::class, 'approve'])->name('testimonials.approve');
+    Route::delete('testimonials/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
 });

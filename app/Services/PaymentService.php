@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Payment;
@@ -11,8 +10,6 @@ class PaymentService
         $query = Payment::query();
 
         $query->with(['subscription.member', 'subscription.plan']);
-
-        // Add any filtering logic here if needed in the future
 
         return $query->latest('payment_date')->get();
     }
