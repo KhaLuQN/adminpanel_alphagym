@@ -126,6 +126,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/contacts/{contact}/resolve', [ContactController::class, 'resolve'])->name('contacts.resolve');
     Route::post('/contacts/{contact}/unresolve', [ContactController::class, 'unresolve'])->name('contacts.unresolve');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::post('/admin/contacts/reply', [ContactController::class, 'reply'])->name('contacts.reply');
 
 });
 

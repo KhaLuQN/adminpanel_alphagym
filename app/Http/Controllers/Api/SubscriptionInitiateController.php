@@ -60,7 +60,6 @@ class SubscriptionInitiateController extends Controller
 
         $plan = MembershipPlan::find($request->membership_plan_id);
 
-        // Check if the plan is a trial and if the member already has a trial subscription
         if ($plan && $plan->is_trial) {
             $existingTrial = MemberSubscription::where('member_id', $member->member_id)
                 ->whereHas('plan', function ($query) {
@@ -93,6 +92,18 @@ class SubscriptionInitiateController extends Controller
             'payment_status'  => 'pending',
             'notes'           => 'Thanh toán bằng vnpay',
         ]);
+        if ($plan->price <= 0) {
+
+            $payment->update([
+                'payment_status' => 'paid',
+                'notes'          => 'Gói tập miễn phí / trial, không cần thanh toán',
+            ]);
+
+            return response()->json([
+                'message' => 'Đăng ký gói tập miễn phí thành công',
+
+            ]);
+        }
 
         if ($request->payment_method === 'vnpay') {
 

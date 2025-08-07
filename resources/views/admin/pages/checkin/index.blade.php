@@ -15,7 +15,7 @@
                     <h4 class="text-2xl font-bold">LỊCH SỬ CHECK-IN THÀNH VIÊN</h4>
                 </div>
 
-                <form method="GET" action="{{ route('admin.checkin.index') }}">
+                <form method="GET" action="{{ route('admin.checkin.index') }}" data-autosubmit="true" id="filterForm">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                         <div>
                             <label for="startDate" class="label">
@@ -31,17 +31,22 @@
                             <input type="date" id="endDate" name="end_date" value="{{ request('end_date') }}"
                                 class="input input-bordered w-full">
                         </div>
+
+                        <!-- Nút nhanh (Hôm nay / Tuần này / Tháng này) -->
                         <div class="md:col-span-2 flex items-end space-x-2">
+                            <div class="flex items-center space-x-2">
+                                <button type="button" class="btn btn-sm btn-outline" id="btnToday">Hôm nay</button>
+                                <button type="button" class="btn btn-sm btn-outline" id="btnThisWeek">Tuần này</button>
+                                <button type="button" class="btn btn-sm btn-outline" id="btnThisMonth">Tháng này</button>
+                            </div>
+
                             <button type="submit" class="btn btn-primary"><i class="ri-filter-line mr-1"></i> Lọc</button>
                             <a href="{{ route('admin.checkin.index') }}" class="btn btn-ghost"><i
                                     class="ri-refresh-line mr-1"></i> Reset</a>
-                            <button type="button" class="btn btn-success"><i class="ri-file-excel-2-line mr-1"></i> Xuất
-                                Excel</button>
-                            <button type="submit" class="btn btn-info"><i class="ri-loop-right-line mr-1"></i> Làm
-                                mới</button>
                         </div>
                     </div>
                 </form>
+
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div class="stat place-items-center bg-blue-500 text-white p-4 rounded-lg">
@@ -160,3 +165,79 @@
         </div>
     </div>
 @endsection
+
+@push('customjs')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startInput = document.getElementById('startDate');
+            const endInput = document.getElementById('endDate');
+
+            // Format Date -> YYYY-MM-DD (phù hợp input[type=date])
+            function toYMD(date) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return `${y}-${m}-${d}`;
+            }
+
+            // Set inputs helper
+            function setRange(startDate, endDate, {
+                submit = false
+            } = {}) {
+                startInput.value = toYMD(startDate);
+                endInput.value = toYMD(endDate);
+                if (submit) {
+                    // submit form nếu bạn muốn tự gửi luôn
+                    document.getElementById('filterForm').submit();
+                }
+            }
+
+            // Hôm nay
+            document.getElementById('btnToday').addEventListener('click', function() {
+                const today = new Date();
+                setRange(today, today);
+            });
+
+            // Tuần này (bắt đầu Thứ Hai -> kết thúc Chủ nhật)
+            document.getElementById('btnThisWeek').addEventListener('click', function() {
+                const now = new Date();
+                // Lấy ngày hiện tại, tìm Thứ Hai của tuần hiện tại
+                // getDay(): 0=Chủ nhật, 1=Thứ hai, ... 6=Thứ bảy
+                const day = now.getDay();
+                // Nếu muốn tuần bắt đầu Chủ nhật, thay logic ở dưới cho phù hợp
+                const diffToMonday = (day === 0) ? -6 : (1 - day); // nếu Chủ nhật -> lùi 6 ngày
+                const monday = new Date(now);
+                monday.setDate(now.getDate() + diffToMonday);
+                const sunday = new Date(monday);
+                sunday.setDate(monday.getDate() + 6);
+                setRange(monday, sunday);
+            });
+
+            // Tháng này (từ ngày 1 -> cuối tháng)
+            document.getElementById('btnThisMonth').addEventListener('click', function() {
+                const now = new Date();
+                const first = new Date(now.getFullYear(), now.getMonth(), 1);
+                // cuối tháng: set ngày = 0 của tháng sau
+                const last = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                setRange(first, last);
+            });
+
+            // --- Tùy chọn: tự động submit khi bấm nút nhanh ---
+            // Nếu bạn muốn tự submit sau khi bấm, thay chuyển submit = true ở mỗi setRange(...) phía trên
+            // hoặc bật đoạn này để submit nếu bạn thêm attribute data-autosubmit="true" vào form
+            const form = document.getElementById('filterForm');
+            if (form && form.dataset.autosubmit === 'true') {
+                // wrap các nút để submit khi bấm
+                const autoButtons = ['btnToday', 'btnThisWeek', 'btnThisMonth'];
+                autoButtons.forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (!btn) return;
+                    btn.addEventListener('click', () => {
+                        // delay nhỏ để ensure values đã set
+                        setTimeout(() => form.submit(), 50);
+                    });
+                });
+            }
+        });
+    </script>
+@endpush

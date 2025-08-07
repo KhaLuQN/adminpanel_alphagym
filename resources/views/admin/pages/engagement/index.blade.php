@@ -148,11 +148,7 @@
                                     </table>
                                 </div>
 
-                                @if ($members->hasPages())
-                                    <div class="mt-4 flex justify-center">
-                                        {{ $members->links() }}
-                                    </div>
-                                @endif
+
 
                                 <div class="mt-4 flex justify-between items-center">
                                     <div id="selected-count" class="text-sm text-base-content/70">
