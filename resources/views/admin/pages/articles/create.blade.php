@@ -96,7 +96,7 @@
                                         Tóm Tắt
                                     </span>
                                 </label>
-                                <textarea name="excerpt" id="excerpt"
+                                <textarea name="excerpt" id="content"
                                     class="textarea textarea-bordered h-24 @error('excerpt') textarea-error @enderror"
                                     placeholder="Viết tóm tắt ngắn gọn về bài viết...">{{ old('excerpt') }}</textarea>
                                 @error('excerpt')

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Services\ContactService;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -38,5 +39,31 @@ class ContactController extends Controller
     {
         $this->contactService->deleteContact($contact);
         return redirect()->back()->with('success', 'Liên hệ đã được xóa thành công.');
+    }
+
+    public function reply(Request $request)
+    {
+
+        $data = $request->validate([
+            'contact_id' => 'required|exists:contacts,id',
+            'to_email'   => 'required|email',
+            'subject'    => 'required|string|max:255',
+            'message'    => 'required|string',
+        ]);
+
+        $ok = $this->contactService->sendReplyEmail($data);
+
+        if ($ok) {
+
+            $contact = Contact::find($data['contact_id']);
+            if ($contact) {
+                $this->contactService->resolveContact($contact);
+
+            }
+
+            return redirect()->back()->with('success', 'Email phản hồi đã được gửi thành công và trạng thái đã được cập nhật.');
+        }
+
+        return redirect()->back()->with('error', 'Gửi email thất bại. Vui lòng thử lại sau.');
     }
 }

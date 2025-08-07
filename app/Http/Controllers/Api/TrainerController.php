@@ -17,5 +17,11 @@ class TrainerController extends Controller
 
         return TrainerResource::collection($trainers);
     }
+    public function show($id)
+    {
+        $trainer = TrainerProfile::with('member')->findOrFail($id);
+
+        return new TrainerResource($trainer);
+    }
 
 }

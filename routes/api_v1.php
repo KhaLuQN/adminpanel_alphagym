@@ -23,6 +23,7 @@ Route::get('/testimonials', [TestimonialController::class, 'index']);
 Route::post('/testimonials', [TestimonialController::class, 'store']);
 
 Route::get('/trainers', [TrainerController::class, 'index']);
+Route::get('/trainers/{id}', [TrainerController::class, 'show']);
 
 Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
 
