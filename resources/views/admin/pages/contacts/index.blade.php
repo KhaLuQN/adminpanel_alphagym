@@ -189,11 +189,16 @@
                                                 </li>
                                             @endif
                                             <li>
-                                                <a href="mailto:{{ $contact->email }}" class="text-info">
+                                                <button type="button"
+                                                    class="text-info btn-ghost reply-email-btn flex items-center gap-2"
+                                                    data-email="{{ $contact->email }}"
+                                                    data-name="{{ $contact->full_name }}" data-id="{{ $contact->id }}">
                                                     <i class="ri-mail-send-line"></i>
                                                     Gửi email
-                                                </a>
+                                                </button>
                                             </li>
+
+
                                             <li>
                                                 <a href="tel:{{ $contact->phone }}" class="text-info">
                                                     <i class="ri-phone-line"></i>
@@ -341,12 +346,7 @@
                 </table>
             </div>
 
-            <!-- Pagination -->
-            @if ($contacts->hasPages())
-                <div class="flex justify-center py-4">
-                    {{ $contacts->links() }}
-                </div>
-            @endif
+            @include('admin.pages.contacts.modals')
         </div>
 
 
@@ -354,3 +354,51 @@
 
 
 @endsection
+@push('customjs')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chọn tất cả nút reply
+            document.querySelectorAll('.reply-email-btn').forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const email = this.dataset.email || '';
+                    const name = this.dataset.name || '';
+                    const id = this.dataset.id || '';
+
+                    // Fill modal fields
+                    document.getElementById('reply_contact_id').value = id;
+                    document.getElementById('reply_to_email').value = email;
+                    document.getElementById('reply_to_display').value = name + ' <' + email + '>';
+
+                    // Nếu muốn thay subject mặc định theo tên
+                    document.getElementById('reply_subject').value =
+                        `Phản hồi từ GymTech: Trả lời ${name}`;
+
+                    // Tùy chỉnh body mẫu (nếu cần)
+                    const bodyEl = document.getElementById('reply_body');
+                    if (bodyEl) {
+                        bodyEl.value =
+                            `Xin chào ${name},\n\nCảm ơn bạn đã gửi phản hồi tới GymTech. Chúng tôi đã nhận được phản hồi của bạn và đang xem xét. Dưới đây là phản hồi từ chúng tôi — bạn có thể chỉnh sửa trước khi gửi:\n\n[Viết nội dung ở đây...]\n\nTrân trọng,\nGymTech`;
+                    }
+
+                    // Show modal (sử dụng dialog API như bạn đang dùng)
+                    const modal = document.getElementById('replyEmailModal');
+                    if (modal && typeof modal.showModal === 'function') {
+                        modal.showModal();
+                    } else if (modal) {
+                        // fallback: toggle class nếu dùng khác
+                        modal.classList.add('open');
+                    }
+                });
+            });
+
+            // Cancel button đóng modal
+            const cancelBtn = document.getElementById('reply_cancel_btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function() {
+                    const modal = document.getElementById('replyEmailModal');
+                    if (modal && typeof modal.close === 'function') modal.close();
+                });
+            }
+        });
+    </script>
+@endpush

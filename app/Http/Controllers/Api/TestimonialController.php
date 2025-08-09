@@ -2,9 +2,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\StoreTestimonialRequest;
 use App\Http\Resources\TestimonialResource;
+use App\Models\Member;
 use App\Models\Testimonial;
-use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
@@ -20,21 +21,37 @@ class TestimonialController extends Controller
         return TestimonialResource::collection($testimonials);
     }
 
-    public function store(Request $request)
+    public function store(StoreTestimonialRequest $request)
     {
-        $validated = $request->validate([
-            'customer_name'       => 'required|string|max:100',
-            'testimonial_content' => 'required|string|max:1000',
-            'rating'              => 'nullable|integer|min:1|max:5',
-        ]);
+        $validated = $request->validated();
+
+        $member = Member::where('phone', $validated['phone'])->first();
+        if (! $member) {
+            return response()->json(['message' => 'Số điện thoại không tồn tại trong hệ thống. Chỉ hội viên mới có thể gửi đánh giá.'], 404);
+        }
+
+        if ($member) {
+            $existingTestimonial = Testimonial::where('member_id', $member->member_id)->first();
+
+            if ($existingTestimonial) {
+                return response()->json(['message' => 'Bạn đã gửi đánh giá trước đó.'], 409);
+            }
+        }
+        $submittedAt = now();
+        $imagePath   = $request->hasFile('image')
+        ? $request->file('image')->store('testimonials', 'public')
+        : null;
 
         $testimonial = Testimonial::create([
             'customer_name'       => $validated['customer_name'],
-            'testimonial_content' => $validated['testimonial_content'],
-            'rating'              => $validated['rating'] ?? null,
+            'testimonial_content' => $validated['content'],
+            'rating'              => $validated['rating'],
+            'image_url'           => $request->hasFile('image')
+            ? $request->file('image')->store('testimonials', 'public')
+            : null,
+            'submitted_at'        => $submittedAt,
+            'member_id'           => $member ? $member->member_id : null,
             'is_approved'         => 0,
-
-            'submitted_at'        => now(),
         ]);
 
         return response()->json([

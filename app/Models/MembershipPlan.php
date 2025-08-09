@@ -18,6 +18,9 @@ class MembershipPlan extends Model
         'duration_days',
         'price',
         'discount_percent',
+        'is_ active',
+        'description',
+        'is_trial',
     ];
 
     public function subscriptions(): HasMany

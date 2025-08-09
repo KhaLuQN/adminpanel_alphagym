@@ -90,8 +90,9 @@
                                                 Tóm Tắt
                                             </span>
                                         </label>
-                                        <textarea name="excerpt" id="excerpt"
-                                            class="textarea textarea-bordered h-24 @error('excerpt') textarea-error @enderror"
+                                        <textarea name="excerpt" id="content"
+                                            class="textarea textarea-bordered h-24
+                                            @error('excerpt') textarea-error @enderror"
                                             placeholder="Mô tả ngắn gọn về bài viết...">{{ old('excerpt', $article->excerpt) }}</textarea>
                                         @error('excerpt')
                                             <label class="label">

@@ -12,7 +12,8 @@
         "daisyui": "^5.0.43",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.38",
-        "tailwindcss": "^4.0.0-alpha.11"
+        "tailwindcss": "^4.0.0-alpha.11",
+        "vite": "^6.3.5"
     },
     "dependencies": {
         "datatables.net-buttons": "^3.2.4",

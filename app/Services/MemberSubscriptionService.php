@@ -36,7 +36,20 @@ class MemberSubscriptionService
 
     public function handleSubscription(array $validatedData): array
     {
-        $package     = MembershipPlan::findOrFail($validatedData['package_id']);
+        $package = MembershipPlan::findOrFail($validatedData['package_id']);
+
+        if ($package->is_trial) {
+            $existingTrial = MemberSubscription::where('member_id', $validatedData['member_id'])
+                ->whereHas('plan', function ($query) {
+                    $query->where('is_trial', 1);
+                })
+                ->exists();
+
+            if ($existingTrial) {
+                throw new \Exception('Hội viên đã đăng ký gói tập thử.');
+            }
+        }
+
         $actualPrice = $package->price * (1 - $package->discount_percent / 100);
 
         $currentSubscription = MemberSubscription::where('member_id', $validatedData['member_id'])
@@ -48,8 +61,8 @@ class MemberSubscriptionService
             ->first();
 
         $startDate = $currentSubscription
-        ? Carbon::parse($currentSubscription->end_date)->addDay()
-        : Carbon::parse($validatedData['start_date']);
+            ? Carbon::parse($currentSubscription->end_date)->addDay()
+            : Carbon::parse($validatedData['start_date']);
 
         $endDate = $startDate->copy()->addDays($package->duration_days);
 

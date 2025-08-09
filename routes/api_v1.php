@@ -1,8 +1,8 @@
 <?php
-
 use App\Http\Controllers\Api\ApiVnpayReturnController;
 use App\Http\Controllers\Api\ArticleCategoryController;
 use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\Auth\MemberMagicLinkController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\MembershipPlanController;
 use App\Http\Controllers\Api\SubscriptionInitiateController;
@@ -23,6 +23,7 @@ Route::get('/testimonials', [TestimonialController::class, 'index']);
 Route::post('/testimonials', [TestimonialController::class, 'store']);
 
 Route::get('/trainers', [TrainerController::class, 'index']);
+Route::get('/trainers/{id}', [TrainerController::class, 'show']);
 
 Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
 
@@ -30,3 +31,5 @@ Route::post('/subscription/initiate', [SubscriptionInitiateController::class, 'i
 
 Route::get('/vnpay/return', [ApiVnpayReturnController::class, 'handleReturn'])->name('api.vnpay.return');
 Route::post('/contacts', [ContactController::class, 'store']);
+Route::post('/magic-link/send', [MemberMagicLinkController::class, 'send']);
+Route::post('/magic-login', [MemberMagicLinkController::class, 'verify']);

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Services;
 
 use App\Models\Checkin;
@@ -17,7 +16,7 @@ class DashboardService
         $sevenDaysAgo = Carbon::today()->subDays(6);
 
         // KPI Data
-        $todayRevenue      = Payment::whereDate('payment_date', $today)
+        $todayRevenue = Payment::whereDate('payment_date', $today)
             ->where('payment_status', 'paid')
             ->sum('amount');
         $newMembersCount   = Member::whereDate('join_date', $today)->count();
@@ -25,7 +24,7 @@ class DashboardService
         $membersInGymCount = Checkin::whereDate('checkin_time', $today)
             ->whereNull('checkout_time')
             ->count();
-        $totalMembers      = Member::whereHas('subscriptions', function ($query) use ($today) {
+        $totalMembers = Member::whereHas('subscriptions', function ($query) use ($today) {
             $query->where('end_date', '>=', $today);
         })->count();
 

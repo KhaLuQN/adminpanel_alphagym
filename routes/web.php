@@ -15,6 +15,8 @@ use App\Http\Controllers\admin\MemberSubscriptionController;
 use App\Http\Controllers\admin\PaymentController;
 use App\Http\Controllers\admin\ReportController;
 use App\Http\Controllers\admin\RFIDController;
+use App\Http\Controllers\admin\TestimonialController
+;
 use App\Http\Controllers\admin\TrainerController;
 use App\Http\Controllers\admin\VnpayController;
 use App\Http\Controllers\auth\LoginController;
@@ -69,8 +71,9 @@ Route::prefix('admin/trainers')->name('admin.trainers.')->group(function () {
     Route::get('/', [TrainerController::class, 'index'])->name('index');
     Route::get('/create', [TrainerController::class, 'create'])->name('create');
     Route::post('/', [TrainerController::class, 'store'])->name('store');
-    Route::put('/{trainerProfile}', [TrainerController::class, 'update'])->name('update');
-    Route::delete('/{trainerProfile}', [TrainerController::class, 'destroy'])->name('destroy');
+    Route::get('/{trainer}/edit', [TrainerController::class, 'edit'])->name('edit');
+    Route::put('/{trainer}', [TrainerController::class, 'update'])->name('update');
+    Route::delete('/{trainer}', [TrainerController::class, 'destroy'])->name('destroy');
 });
 
 // Checkin routes
@@ -124,5 +127,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/contacts/{contact}/resolve', [ContactController::class, 'resolve'])->name('contacts.resolve');
     Route::post('/contacts/{contact}/unresolve', [ContactController::class, 'unresolve'])->name('contacts.unresolve');
     Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::post('/admin/contacts/reply', [ContactController::class, 'reply'])->name('contacts.reply');
 
+});
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
+    Route::patch('testimonials/{testimonial}/approve', [TestimonialController::class, 'approve'])->name('testimonials.approve');
+    Route::delete('testimonials/{testimonial}', [TestimonialController::class, 'destroy'])->name('testimonials.destroy');
 });

@@ -28,6 +28,11 @@ class TrainerProfile extends Model
         'specialty',
         'bio',
         'certifications',
+        'average_rating',
+        'price_per_session',
+        'slug',
+        'is_active',
+
         'experience_years',
         'facebook_url',
         'instagram_url',
