@@ -71,8 +71,9 @@ Route::prefix('admin/trainers')->name('admin.trainers.')->group(function () {
     Route::get('/', [TrainerController::class, 'index'])->name('index');
     Route::get('/create', [TrainerController::class, 'create'])->name('create');
     Route::post('/', [TrainerController::class, 'store'])->name('store');
-    Route::put('/{trainerProfile}', [TrainerController::class, 'update'])->name('update');
-    Route::delete('/{trainerProfile}', [TrainerController::class, 'destroy'])->name('destroy');
+    Route::get('/{trainer}/edit', [TrainerController::class, 'edit'])->name('edit');
+    Route::put('/{trainer}', [TrainerController::class, 'update'])->name('update');
+    Route::delete('/{trainer}', [TrainerController::class, 'destroy'])->name('destroy');
 });
 
 // Checkin routes

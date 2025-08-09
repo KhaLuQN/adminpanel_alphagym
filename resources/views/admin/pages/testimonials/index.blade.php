@@ -192,19 +192,7 @@
                                                 </button>
                                             </form>
 
-                                            <!-- Delete Button -->
-                                            <form id="delete-equipment-form-{{ $testimonial->testimonial_id }}"
-                                                action="{{ route('admin.testimonials.destroy', $testimonial->testimonial_id) }}"
-                                                method="POST" class="inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button"
-                                                    data-form-id="delete-equipment-form-{{ $testimonial->testimonial_id }}"
-                                                    class="btn btn-sm btn-error tooltip delete-btn"
-                                                    data-tip="Xóa đánh giá">
-                                                    <i class="ri-delete-bin-line"></i>
-                                                </button>
-                                            </form>
+
                                         </div>
                                     </td>
                                 </tr>

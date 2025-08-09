@@ -57,22 +57,13 @@
                                     <td><span class="badge badge-success">Đang hoạt động</span></td>
                                     <td>
                                         <div class="flex items-center space-x-2">
-                                            <button type="button" class="btn btn-sm btn-info edit-trainer-btn"
-                                                data-id="{{ $trainer->id }}" data-specialty="{{ $trainer->specialty }}"
-                                                data-experience="{{ $trainer->experience_years }}"
-                                                data-bio="{{ $trainer->bio }}"
-                                                data-certifications="{{ $trainer->certifications }}"
-                                                data-facebook="{{ $trainer->facebook_url }}"
-                                                data-instagram="{{ $trainer->instagram_url }}"
-                                                data-photo="{{ $trainer->photo_url }}"
-                                                data-name="{{ $trainer->member->full_name }}"
-                                                data-update-url="{{ route('admin.trainers.update', $trainer->id) }}">
+                                            <a href="{{ route('admin.trainers.edit', $trainer->id) }}" class="btn btn-sm btn-info">
                                                 <i class="ri-edit-line"></i>
-                                            </button>
+                                            </a>
 
                                             <form action="{{ route('admin.trainers.destroy', $trainer->id) }}"
                                                 method="POST"
-                                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa HLV này?');">
+                                                class="delete-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-sm btn-ghost btn-circle">
@@ -90,40 +81,7 @@
         </div>
     </div>
 
-    {{-- Include Modal Chỉnh sửa --}}
-    @include('admin.pages.trainers.components.edit')
+    
 @endsection
 
-@push('scripts')
-    <script>
-        function editTrainerModal() {
-            return {
-                trainer: {},
-                member: {},
-                updateUrl: '',
-                openModal(event) {
-                    const button = event.currentTarget;
-                    this.trainer = JSON.parse(button.dataset.trainer);
-                    this.member = JSON.parse(button.dataset.member);
-                    this.updateUrl = button.dataset.updateUrl;
 
-                    // Cập nhật action của form
-                    const form = document.getElementById('editTrainerForm');
-                    form.action = this.updateUrl;
-
-                    // Điền dữ liệu vào các trường
-                    document.getElementById('edit-specialty').value = this.trainer.specialty;
-                    document.getElementById('edit-experience_years').value = this.trainer.experience_years;
-                    document.getElementById('edit-bio').value = this.trainer.bio;
-                    document.getElementById('edit-certifications').value = this.trainer.certifications;
-                    document.getElementById('edit-facebook_url').value = this.trainer.facebook_url;
-                    document.getElementById('edit-instagram_url').value = this.trainer.instagram_url;
-                    document.getElementById('current-photo').src = this.trainer.photo_url;
-                }
-            }
-        }
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('editTrainerModal', editTrainerModal);
-        });
-    </script>
-@endpush

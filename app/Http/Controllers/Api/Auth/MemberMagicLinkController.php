@@ -24,16 +24,17 @@ class MemberMagicLinkController extends Controller
         $member = Member::where('email', $request->email)->first();
 
         if (! $member) {
-            return response()->json(['message' => 'Email không tồn tại trong hệ thống.'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Email không tồn tại trong hệ thống.',
+            ], 200);
         }
 
-        // Tìm magic link còn hiệu lực
         $magicLink = MagicLink::where('member_id', $member->member_id)
             ->where('expires_at', '>', now())
             ->latest()
             ->first();
 
-        // Nếu chưa có thì tạo mới
         if (! $magicLink) {
             $magicLink = MagicLink::create([
                 'member_id'  => $member->member_id,

@@ -14,7 +14,7 @@
     <p style="margin: 20px 0;">
         <a href="{{ $magicLink }}"
             style="display:inline-block;padding:10px 20px;background-color:#dc2626;color:#fff;text-decoration:none;border-radius:5px;">
-            Đăng nhập ngay
+            Xem Tài Khoản Của Bạn
         </a>
     </p>
 
