@@ -49,7 +49,13 @@
                                     </td>
                                     <td>{{ $payment->payment_status }}</td>
                                     <td>
-                                        {{ \Carbon\Carbon::parse($payment->payment_date)->format('H:i d/m/Y') }}</td>
+                                        <div class="font-medium">
+                                            {{ \Carbon\Carbon::parse($payment->payment_date)->format(' d/m/Y') }}
+                                        </div>
+                                        <div class="text-gray-500">
+                                            {{ \Carbon\Carbon::parse($payment->payment_date)->format('H:i ') }}
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>

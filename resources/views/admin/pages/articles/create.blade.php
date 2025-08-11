@@ -96,7 +96,7 @@
                                         Tóm Tắt
                                     </span>
                                 </label>
-                                <textarea name="excerpt" id="content"
+                                <textarea name="excerpt" id="excerpt"
                                     class="textarea textarea-bordered h-24 @error('excerpt') textarea-error @enderror"
                                     placeholder="Viết tóm tắt ngắn gọn về bài viết...">{{ old('excerpt') }}</textarea>
                                 @error('excerpt')
@@ -462,6 +462,23 @@
     <!-- CKEditor 5 -->
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 
+    <style>
+        #content+.ck-editor .ck-editor__editable {
+            min-height: 600px;
+            width: 100%;
+        }
+
+
+        #excerpt+.ck-editor .ck-editor__editable {
+            min-height: 200px;
+        }
+
+        .ck-editor__editable {
+            resize: vertical !important;
+
+        }
+    </style>
+
     <script>
         let editor;
 
@@ -513,6 +530,21 @@
                 editor.model.document.on('change:data', () => {
                     autoGenerateExcerpt();
                 });
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        // Initialize CKEditor for excerpt
+        ClassicEditor
+            .create(document.querySelector('#excerpt'), {
+                toolbar: {
+                    items: [
+                        'bold', 'italic', 'link', '|',
+                        'bulletedList', 'numberedList', '|',
+                        'undo', 'redo'
+                    ]
+                },
+                language: 'vi'
             })
             .catch(error => {
                 console.error(error);

@@ -90,7 +90,7 @@
                                                 Tóm Tắt
                                             </span>
                                         </label>
-                                        <textarea name="excerpt" id="content"
+                                        <textarea name="excerpt" id="excerpt"
                                             class="textarea textarea-bordered h-24
                                             @error('excerpt') textarea-error @enderror"
                                             placeholder="Mô tả ngắn gọn về bài viết...">{{ old('excerpt', $article->excerpt) }}</textarea>
@@ -453,13 +453,30 @@
             </form>
         </div>
     </div>
+    <style>
+        #content+.ck-editor .ck-editor__editable {
+            min-height: 600px;
+            width: 100%;
+        }
 
+
+        #excerpt+.ck-editor .ck-editor__editable {
+            min-height: 200px;
+        }
+
+        .ck-editor__editable {
+            resize: vertical !important;
+
+        }
+    </style>
     <!-- Scripts -->
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize CKEditor
             ClassicEditor
+
                 .create(document.querySelector('#content'), {
                     toolbar: {
                         items: [
@@ -502,6 +519,21 @@
                     },
                     licenseKey: '',
                     minHeight: '400px'
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor
+                .create(document.querySelector('#excerpt'), {
+                    toolbar: {
+                        items: [
+                            'bold', 'italic', 'link', '|',
+                            'bulletedList', 'numberedList', '|',
+                            'undo', 'redo'
+                        ]
+                    },
+                    language: 'vi'
                 })
                 .catch(error => {
                     console.error(error);

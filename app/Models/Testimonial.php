@@ -55,4 +55,17 @@ class Testimonial extends Model
 
         return $this->belongsTo(Member::class, 'member_id', 'member_id');
     }
+
+    /**
+     * Get the full URL of the member image.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getImageUrlAttribute()
+    {if ($this->attributes['image_url']) {
+        return asset('storage/' . $this->attributes['image_url']);
+    }
+        return asset('images/default.png');}
+
 }
