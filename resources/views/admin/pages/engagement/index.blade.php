@@ -116,12 +116,7 @@
                                                     </td>
                                                     <td class="font-medium">
                                                         <div class="flex items-center gap-2">
-                                                            <div class="avatar placeholder">
-                                                                <div
-                                                                    class="bg-primary text-center text-primary-content rounded-full w-8 h-8 text-xs">
-                                                                    <span>{{ substr($member->full_name, 0, 1) }}</span>
-                                                                </div>
-                                                            </div>
+
                                                             {{ $member->full_name }}
                                                         </div>
                                                     </td>

@@ -10,7 +10,11 @@ $(".datatable").each(function () {
     $(this).DataTable({
         responsive: true,
         autoWidth: false,
-        columnDefs: [{ targets: "_all", defaultContent: "-" }],
+        order: orderData || [[0, "asc"]],
+        columnDefs: [
+            { targets: "_all", defaultContent: "-" },
+            { targets: 0, orderable: false },
+        ],
         language: {
             sProcessing: "Đang xử lý...",
             sLengthMenu: "Hiển thị _MENU_ mục",

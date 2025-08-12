@@ -52,7 +52,7 @@
 
                 <!-- Table -->
                 <div class="overflow-x-auto bg-base-100 rounded-lg shadow-inner">
-                    <table class="table table-zebra datatable w-full">
+                    <table class="p-4 table table-zebra datatable w-full" data-order='[[0,"asc"]]'>
                         <thead>
                             <tr class="bg-base-300 text-base-content">
                                 <th class="font-bold text-center">
