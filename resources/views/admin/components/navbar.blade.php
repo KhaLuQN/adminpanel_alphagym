@@ -1,4 +1,3 @@
-<!-- Navbar -->
 <div class="navbar bg-base-300 shadow-lg border-b border-base-200">
     <div class="navbar-start">
         <label for="drawer-toggle" class="btn btn-square btn-ghost lg:hidden">
@@ -15,9 +14,7 @@
                 <div class="breadcrumbs text-xs">
                     <ul>
                         @section('page_title', 'Quản lý Thiết Bị')
-
                         @yield('breadcrumbs')
-
                     </ul>
                 </div>
             </div>
@@ -26,18 +23,26 @@
 
     <div class="navbar-end gap-2">
 
-
-
+        <!-- Nút thao tác nhanh -->
+        <a href="{{ route('admin.members.create') }}" class="btn btn-sm btn-primary tooltip tooltip-bottom"
+            data-tip="Thêm hội viên">
+            <i class="ri-user-add-line text-lg"></i>
+        </a>
+        <a href="{{ route('admin.subscriptions.create') }}" class="btn btn-sm btn-secondary tooltip tooltip-bottom"
+            data-tip="Thêm gói tập">
+            <i class="ri-file-add-line text-lg"></i>
+        </a>
+        <a href="{{ route('admin.checkin.checkinPage') }}" target="_blank"
+            class="btn btn-sm btn-accent tooltip tooltip-bottom" data-tip="Trang Check-in">
+            <i class="ri-door-open-line text-lg"></i>
+        </a>
 
         <!-- Notifications -->
         @include('admin.components.notifications')
 
-
-
         <!-- Profile -->
         <div class="dropdown dropdown-end">
             <div tabindex="0" role="button" class="btn btn-ghost btn-sm">
-
                 <span class="hidden md:inline ml-2">ADMIN</span>
                 <i class="ri-arrow-down-s-line"></i>
             </div>
@@ -52,7 +57,5 @@
                 <li><a><i class="ri-logout-box-line"></i>Đăng xuất</a></li>
             </ul>
         </div>
-
-
     </div>
 </div>

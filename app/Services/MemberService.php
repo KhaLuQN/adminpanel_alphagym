@@ -66,9 +66,10 @@ class MemberService
 
     public function deleteMember(Member $member): void
     {
-        if ($member->img) {
-            Storage::disk('public')->delete($member->img);
+        if ($member->getRawOriginal('img')) {
+            Storage::disk('public')->delete($member->getRawOriginal('img'));
         }
+
         $member->delete();
     }
 
