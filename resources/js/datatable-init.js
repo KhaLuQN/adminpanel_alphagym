@@ -4,13 +4,14 @@ import "datatables.net-buttons/js/buttons.html5";
 import jszip from "jszip";
 window.JSZip = jszip;
 $(".datatable").each(function () {
+    let tableOrder = $(this).data("order") || [[0, "asc"]];
     if ($.fn.DataTable.isDataTable(this)) {
         $(this).DataTable().destroy();
     }
     $(this).DataTable({
         responsive: true,
         autoWidth: false,
-        order: orderData || [[0, "asc"]],
+        order: tableOrder,
         columnDefs: [
             { targets: "_all", defaultContent: "-" },
             { targets: 0, orderable: false },
