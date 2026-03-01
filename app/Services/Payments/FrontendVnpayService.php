@@ -11,7 +11,7 @@ class FrontendVnpayService
     public function __construct()
     {
         $this->vnpUrl        = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $this->vnpReturnUrl  = route('api.vnpay.return'); // Changed for frontend API
+        $this->vnpReturnUrl  = route('api.vnpay.return');
         $this->vnpTmnCode    = env('VNPAY_TMNCODE');
         $this->vnpHashSecret = env('VNPAY_HASHSECRET');
     }
